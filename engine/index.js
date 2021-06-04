@@ -1,4 +1,5 @@
-let container = $(".output");
+let viewport = $(".viewport");
+let scene = $(".scene");
 let requestFullscreen;
 let gamepad = true;
 let keyboard = navigator.keyboard;
@@ -16,6 +17,21 @@ function guidGenerator() {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
   };
   return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
+}
+
+// https://stackoverflow.com/a/30477171/1741683
+$.fn.withinParent = function() {
+  var left = $(this).offset().left;
+  var top = $(this).offset().top;
+  var right = left + $(this).width();
+  var bottom = top + $(this).height();
+  var pleft = $(this).parent().offset().left;
+  var ptop = $(this).parent().offset().top;
+  var pright = pleft + $(this).parent().width();
+  var pbottom = ptop + $(this).parent().height();
+  console.log(right);
+  console.log(pright);
+  return left > pleft && top > ptop && right < pright && bottom < pbottom;
 }
 
 let movement_keys = ["wasd", "arrowkeys"];
@@ -118,23 +134,23 @@ const Engine = {
     },
     viewport: function(set) {
       if (set === false) {
-        container.css("width", "").css("height", "").css("background-color", "");
+        viewport.css("width", "").css("height", "").css("background-color", "");
       } else if (set.constructor == Object) {
-        if (set.width) container.css("width", set.width);
-        if (set.height) container.css("height", set.height);
-        if (set.background) container.css("background-color", set.background);
+        if (set.width) viewport.css("width", set.width);
+        if (set.height) viewport.css("height", set.height);
+        if (set.background) viewport.css("background-color", set.background);
       }
     },
     shake: async function(deg = 5, between = 100) {
-      container.css("transform", "rotate(" + deg + "deg)");
+      viewport.css("transform", "rotate(" + deg + "deg)");
       await sleep(between);
-      container.css("transform", "rotate(-" + deg + "deg)");
+      viewport.css("transform", "rotate(-" + deg + "deg)");
       await sleep(between);
-      container.css("transform", "rotate(" + deg + "deg)");
+      viewport.css("transform", "rotate(" + deg + "deg)");
       await sleep(between);
-      container.css("transform", "rotate(-" + deg + "deg)");
+      viewport.css("transform", "rotate(-" + deg + "deg)");
       await sleep(between);
-      container.css("transform", "");
+      viewport.css("transform", "");
     }
   },
   sound: {
@@ -147,6 +163,7 @@ const Engine = {
       // tba...
     },
     keyboard: function(key, callback) {
+
       document.addEventListener('keydown', (e) => {
         // if ((e.code === 'KeyA') && !(event.ctrlKey || event.metaKey)) {
         //   // Do something when the 'A' key was pressed, but only
@@ -154,25 +171,18 @@ const Engine = {
         // }
         let code = e.code;
         let trigger = false;
-        if (code === "up" || code === "left" || code === "right" || code === "down") {
-          key = "Arrow" + capitalize(key);
-          if (key === code) {
-            trigger = true;
-          }
-        } else if (key === "meta" && event.metaKey) {
+        let directions = ["up", "left", "right", "down"];
+        if (key === "meta" && event.metaKey) {
           trigger = true;
         } else if (key === "ctrl" && event.ctrlKey) {
           trigger = true;
         } else if (key.length === 1) {
           key = "Key" + key.toUpperCase();
-          if (key === code) {
-            trigger = true;
-          }
-        } else if (key === e.code) {
-          trigger = true;
+        } else if (directions.includes(key)) {
+          key = "Arrow" + capitalize(key);
         }
-        console.log(key);
-        if (callback && trigger === true) {
+        if (callback && (key === e.code || trigger === true)) {
+          console.log(key);
           callback(e);
         }
       });
@@ -186,43 +196,87 @@ const Engine = {
 class Sprite {
   constructor(options) {
     let id = guidGenerator();
-    container.append("<div class='sprite' id='" + id + "'></div>");
+    scene.append("<div class='sprite' id='" + id + "'></div>");
     this.element = document.getElementById(id);
     this.id = id;
     if (options) {
+      let bound = this.element.getBoundingClientRect();
       this.options = options;
       if (this.options.name) this.name = this.options.name;
-      if (this.options.width) this.element.css("width", this.options.width);
-      if (this.options.height) this.element.css("height", this.options.height);
-      if (this.options.background) this.element.css("background", this.options.background);
+      if (this.options.width) $(this.element).css("width", this.options.width);
+      if (this.options.height) $(this.element).css("height", this.options.height);
+      // if (this.options.center === true) {
+      //   $(this.element).css("top", ($(this.element).offset().top - $(this.element).parent().offset().top) + $(this.element).height() / 2);
+      //   $(this.element).css("left", ($(this.element).offset().left - $(this.element).parent().offset().left) + $(this.element).width() / 2);
+      // }
+      console.log(viewport.width());
+      console.log(viewport.height());
+      console.log(window.innerHeight);
+      console.log(window.innerWidth);
+      var y = window.innerHeight - viewport.height();
+      var x = window.innerWidth - viewport.width();
+      console.log(x);
+      console.log(y);
+      if (this.options.x) $(this.element).css("top", y + this.options.y + "px");
+      if (this.options.y) $(this.element).css("left", x + this.options.x + "px");
+      if (this.options.z) $(this.element).css("z-index", this.options.z);
+      if (this.options.background) $(this.element).css("background", this.options.background);
     }
   }
   move(dir, amt) {
     let bound = this.element.getBoundingClientRect();
-    switch (dir) {
-      case "up":
-        this.element.top = (bound.y - amt) + "px";
-        break;
-      case "left":
-        this.element.left = (bound.x - amt) + "px";
-        break;
-      case "right":
-        this.element.left = (bound.x + amt) + "px";
-        break;
-      case "down":
-        this.element.top = (bound.y + amt) + "px";
-        break;
-      default:
+    if ($(this.element).withinParent()) {
+      if (dir && amt) {
+        console.log("moving sprite (" + this.id + ") " + amt + "px " + dir);
+        switch (dir) {
+          case "up":
+            $(this).css("top", (bound.y - amt) + "px");
+            break;
+          case "left":
+            $(this).css("top", (bound.y - amt) + "px");
+            break;
+          case "right":
+            $(this).css("left", (bound.y + amt) + "px");
+            break;
+          case "down":
+            $(this).css("top", (bound.y + amt) + "px");
+            break;
+          default:
+            console.error("usage: move(direction,amount)");
+        }
+      } else {
         console.error("usage: move(direction,amount)");
+      }
+    } else {
+      console.log("move: out of bounds");
     }
   }
   set(option, value) {
     if (option && value) {
       this.options[option] = value;
+      let bound = this.element.getBoundingClientRect();
+      if (this.options.name) this.name = this.options.name;
+      if (this.options.x) $(this.element).css("top", bound.y + this.options.y + "px");
+      if (this.options.y) $(this.element).css("left", bound.x + this.options.x + "px");
+      if (this.options.z) this.element.style.zIndex = this.options.z;
+      if (this.options.width) this.element.style.width = this.options.width;
+      if (this.options.height) this.element.style.height = this.options.height;
+      if (this.options.background) this.element.style.background = this.options.background;
     }
   }
-  destroy() {
+  get(option) {
+    if (this.options[option]) {
+      return this.options[option];
+    } else {
+      return false;
+    }
+  }
+  flash() {
 
+  }
+  destroy() {
+    this.element.remove();
+    delete this;
   }
 }
 

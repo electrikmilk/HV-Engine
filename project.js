@@ -7,28 +7,25 @@ $(function() {
     height: "480px"
   });
   let sprite = new Sprite({
-    name: "MyCharacter"
+    name: "MyCharacter",
+    x: 20,
+    y: 20
   });
   // Engine.controls.keyboard("a", function(e) {
   //   Engine.display.shake();
   // });
-  Engine.controls.keyboard("up", function(e) {
-    console.log("move up");
+  Engine.controls.keyboard("w", function(e) {
     sprite.move("up", 5);
   });
-  Engine.controls.keyboard("left", function(e) {
-    console.log("move left");
+  Engine.controls.keyboard("a", function(e) {
     sprite.move("left", 5);
   });
-  Engine.controls.keyboard("right", function(e) {
-    console.log("move right");
+  Engine.controls.keyboard("d", function(e) {
     sprite.move("right", 5);
   });
-  Engine.controls.keyboard("down", function(e) {
-    console.log("move down");
+  Engine.controls.keyboard("s", function(e) {
     sprite.move("down", 5);
   });
-
 });
 
 $(window).on("load", function() {
