@@ -209,14 +209,8 @@ class Sprite {
       //   $(this.element).css("top", ($(this.element).offset().top - $(this.element).parent().offset().top) + $(this.element).height() / 2);
       //   $(this.element).css("left", ($(this.element).offset().left - $(this.element).parent().offset().left) + $(this.element).width() / 2);
       // }
-      console.log(viewport.width());
-      console.log(viewport.height());
-      console.log(window.innerHeight);
-      console.log(window.innerWidth);
       var y = window.innerHeight - viewport.height();
       var x = window.innerWidth - viewport.width();
-      console.log(x);
-      console.log(y);
       if (this.options.x) $(this.element).css("top", y + this.options.y + "px");
       if (this.options.y) $(this.element).css("left", x + this.options.x + "px");
       if (this.options.z) $(this.element).css("z-index", this.options.z);
