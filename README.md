@@ -1,9 +1,9 @@
-# HV2D Engine
+# HV Engine
 HTML5 2D game engine
 
 **Status: WIP**
 
-The focus of this engine is to enable the user to develop 2D games for the browser with ease.
+The focus of this engine is to enable the developer to develop 2D games for the browser with ease. The intention is to not make the next great HTML5 2D game engine but just to make a game engine I'd like to use and maybe others would like to use as well.
 
 ### Project Setup
 
