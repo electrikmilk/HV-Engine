@@ -40,5 +40,8 @@ let plugins = [
 ];
 
 let myGame = new Game(scenes,plugins);
+
+// define global variables for your scenes...etc.
+
 ```
-This will prompt the engine to load your first scene once it is ready. In your scene files is where you tell the engine what you want it to do. You can load other scenes, create spites, and more! Check the docs for more info on everything a scene can tell the engine to do.
+This will prompt the engine to load your first scene once it is ready. In your scene files is where you tell the engine what you want it to do. You can load other scenes, create sprites, and more! Check the docs for more info on everything a scene can tell the engine to do.
