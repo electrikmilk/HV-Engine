@@ -11,8 +11,11 @@ $(function () {
 });
 
 const default_plugins = [
+	"mouse",
 	"keyboard",
-	"gamepad"
+	"ui",
+	"storage",
+	"audio"
 ];
 
 class Game {
@@ -104,5 +107,11 @@ class Scene {
 	/* called once every frame */
 	loop() {
 		rAF(loop);
+	}
+}
+
+class Sprite {
+	constructor() {
+
 	}
 }

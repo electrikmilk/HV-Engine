@@ -1,6 +1,7 @@
-/* Gamepad Support
+/*
+* Gamepad Plugin
 *
-* Add this to your project if you would like to support gamepads
+* Add this to your project if you would like to support gamepad input
 * */
 
 let gamepads = {}; // propagated with gamepad objects

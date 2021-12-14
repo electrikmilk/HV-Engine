@@ -1,6 +1,7 @@
-/* Keyboard Support
+/*
+* Keyboard Plugin
 *
-* Add this to your project if you would like to support keyboards
+* Add this to your project if you would like to support keyboard input
 * */
 
 let keyboard;

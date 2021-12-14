@@ -4,7 +4,7 @@ let readyMessage = "HV-Engine (" + version + ") ready";
 console.time(readyMessage);
 
 let resources = {
-	"frameworks": ["jquery", "mousetrap", "mousetrap-pause"],
+	"frameworks": ["jquery", "jquery-ui", "mousetrap", "mousetrap-pause"],
 	"general": ["engine"]
 };
 
