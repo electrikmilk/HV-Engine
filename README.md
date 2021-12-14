@@ -27,6 +27,7 @@ Create a `scenes` directory in your project. Add scenes to your game by creating
 
 In `project.js`, define a game, and provide your scenes. Optionally, provide it with a second array that includes your plugins.
 ```js
+// The first member in the array is the first scene loaded
 let scenes = [
   "your_scene",
   "your_scene2",
