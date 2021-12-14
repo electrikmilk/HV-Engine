@@ -5,7 +5,6 @@ console.time(readyMessage);
 
 let resources = {
 	"frameworks": ["jquery", "mousetrap", "mousetrap-pause"],
-	"plugins": ["keyboard", "gamepad"],
 	"general": ["engine"]
 };
 
