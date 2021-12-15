@@ -5,13 +5,42 @@
 * This makes it easier to present the user with options, ask for input, etc. without the need to do them yourself
 * */
 
+// for now this will require the audio plugin, as I get into this more I will make this optional if you don't want ur game to have audio
 let tick = new Audio({
 	src: "engine/res/sfx/tick.wav",
 	channel: "sfx"
 });
 
-class UI {
-	constructor() {
+let button = new Button({
+	label: "Label",
+	type: ""
 
+});
+
+class UI {
+	constructor(type) {
+		let element;
+		$("body").append(element);
+	}
+}
+
+class Button {
+	constructor(options) {
+		let type = "";
+		if (options.type) {
+			type = options.type;
+		}
+		this.id = make_id();
+		let element = "<button id='ui-button-" + this.id + "' class='" + type + "'>" + options.label + "</button>";
+	}
+}
+
+class Menu {
+	constructor(options) {
+		// $("body").append("<div class='overlay'></div>");
+		// options.items;
+		// options.items.label;
+		// options.items.description;
+		// options.items.callback;
 	}
 }

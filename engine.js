@@ -86,9 +86,11 @@ class Game {
 /* Scenes can extend this class */
 class Scene {
 	constructor(options) {
-		this.layers = [];
+		this.layers = ["foreground", "background"]; // default
 		this.container = $(".viewport .scene-container");
-
+		if (options) {
+			if (options.layers) this.layers = options.layers;
+		}
 	}
 
 	show(transition) {
@@ -110,6 +112,17 @@ class Scene {
 		rAF(loop);
 	}
 }
+
+// For menus and static elements (eg. HP bar, etc.)
+// class Overlay {
+// 	constructor() {
+//
+// 	}
+//
+// 	content() {
+//
+// 	}
+// }
 
 class Sprite {
 	constructor(options) {
