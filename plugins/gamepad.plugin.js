@@ -5,7 +5,6 @@
 * */
 
 let gamepads = {}; // propagated with gamepad objects
-let enabled = true;
 
 if (!("getGamepads" in navigator)) {
 	console.warn("Gamepad Plugin", "Gamepad access seems to be restricted or unsupported by this browser.", navigator);
@@ -38,10 +37,10 @@ const buttonIndex = {
 	"right-stick": null
 };
 
-const stickAxes = {
-	"left": [0, 1],
-	"right": [2, 3]
-};
+// const stickAxes = {
+// 	"left": [0, 1],
+// 	"right": [2, 3]
+// };
 
 // Handles gamepads being disconnected and reconnected
 function gamepadHandler(event, connecting) {
