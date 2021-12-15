@@ -90,32 +90,36 @@ class Gamepad {
 				setInterval(function () {
 					if (this.enabled === true) {
 						if (button === "left-stick" || button === "right-stick") {
+							let x;
+							let y;
 							if (button === "left-stick") {
-								let x = gamepads[this.player].axes[0];
-								let y = gamepads[this.player].axes[1];
-								switch (state) {
-									case "up":
-										if (y === -1) {
-											callback();
-										}
-										break;
-									case "left":
-										if (x === -1) {
-											callback();
-										}
-										break;
-									case "down":
-										if (y === 1) {
-											callback();
-										}
-										break;
-									case "right":
-										if (x === 1) {
-											callback();
-										}
-										break;
-								}
-							} else if (button === "right-stick") {
+								x = gamepads[this.player].axes[0];
+								y = gamepads[this.player].axes[1];
+							} else {
+								x = gamepads[this.player].axes[2];
+								y = gamepads[this.player].axes[3];
+							}
+							switch (state) {
+								case "up":
+									if (y === -1) {
+										callback();
+									}
+									break;
+								case "left":
+									if (x === -1) {
+										callback();
+									}
+									break;
+								case "down":
+									if (y === 1) {
+										callback();
+									}
+									break;
+								case "right":
+									if (x === 1) {
+										callback();
+									}
+									break;
 							}
 						} else {
 							if (gamepads[this.player].buttons[button].pressed) {
