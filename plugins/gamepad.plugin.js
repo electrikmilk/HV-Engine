@@ -8,7 +8,7 @@ let gamepads = {}; // propagated with gamepad objects
 let enabled = true;
 
 if (!("getGamepads" in navigator)) {
-	console.warn("Gamepad Plugin", "Gamepad access seems to be restricted or unsupported by this browser.", navigator.keyboard);
+	console.warn("Gamepad Plugin", "Gamepad access seems to be restricted or unsupported by this browser.", navigator);
 }
 
 /*
@@ -26,7 +26,7 @@ const buttonIndex = {
 	"left-trigger": "6", // LT | L2
 	"right-trigger": "7", // RT | R2
 	"options-left": "8", // share | view
-	"options": "9", // options | menu
+	"options-right": "9", // options | menu
 	"left-stick-down": "10", // Left-stick pressed
 	"right-stick-down": "11", // Right-stick pressed
 	"dpad-up": "12", // D-Pad
@@ -34,8 +34,8 @@ const buttonIndex = {
 	"dpad-left": "14",
 	"dpad-right": "15",
 	"logo": "16", // Xbox, PlayStation logo buttons
-	"left-stick": false,
-	"right-stick": false
+	"left-stick": null,
+	"right-stick": null
 };
 
 const stickAxes = {
@@ -51,7 +51,7 @@ function gamepadHandler(event, connecting) {
 	if (connecting) {
 		gamepads[gamepad.index] = gamepad;
 		if (gamepad[gamepad.index].mapping !== "standard") {
-			console.warn("gamepadHandler", "Gamepad " + gamepad.index + " does not have standard mapping.", gamepad[gamepad.index].mapping);
+			console.warn("gamepadHandler", "Gamepad " + gamepad.index + " does not have standard mapping. Controls may not work as expected.", gamepad[gamepad.index].mapping);
 		}
 	} else {
 		delete gamepads[gamepad.index];

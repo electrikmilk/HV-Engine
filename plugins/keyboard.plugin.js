@@ -8,7 +8,7 @@
 let keyboard;
 
 if (!("keyboardPlugin" in navigator && "lock" in navigator.keyboard)) {
-	console.warn("Keyboard Plugin", "Keyboard access seems to be restricted or unsupported by this browser.", navigator.keyboard);
+	console.warn("Keyboard Plugin", "Keyboard access seems to be restricted or unsupported by this browser.", navigator);
 } else {
 	keyboard = navigator.keyboard;
 }
