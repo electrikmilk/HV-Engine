@@ -77,20 +77,28 @@ class Gamepad {
 				console.error("Gamepad.on()", "Unknown button '" + button + "'. See 'buttonIndex'.", this);
 				return;
 			}
+			switch (state) {
+				case "pressed":
+					state = "keypress";
+					break;
+				case "held":
+					state = "keydown";
+					break;
+				case "released":
+					state = "keyup";
+					break;
+				default:
+					state = null;
+			}
+			if(callback) {
+				gamepads.forEach(function(gamepad) {
+					setInterval(function() {
+						if(gamepad.buttons[button].pressed) {
+							callback();
+						}
+					}, 100);
+				});
+			}
 		});
-		switch (state) {
-			case "pressed":
-				state = "keypress";
-				break;
-			case "held":
-				state = "keydown";
-				break;
-			case "released":
-				state = "keyup";
-				break;
-			default:
-				state = null;
-		}
-		/* todo */
 	}
 }

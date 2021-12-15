@@ -6,7 +6,5 @@
 * */
 
 class UI {
-	constructor(type) {
 
-	}
 }
