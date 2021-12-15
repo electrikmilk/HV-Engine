@@ -24,6 +24,71 @@ textarea {
 select {
 }
 
+/* Keyboard buttons */
+kbd {
+	position: relative;
+	display: inline-block;
+	border: 1px solid #333333;
+	background: #333333;
+	color: #fafafa;
+	font-weight: bold;
+	padding: 5px 10px;
+	border-radius: 5px;
+	white-space: nowrap;
+	font-family: inherit;
+	border-bottom: 2px solid #333333;
+}
+
+/* Gamepad Buttons */
+.gpb {
+	border: 2px solid #fafafa;
+	border-radius: 2px;
+	padding: 10px;
+	color: #fafafa;
+}
+
+.gpb.circle {
+	border-radius: 50%;
+}
+
+.gpb.rectangle {
+	padding: 10px 20px;
+}
+
+/* Xbox */
+.gpb.a {
+	color: green;
+}
+
+.gpb.b {
+	color: indianred;
+}
+
+.gpb.x {
+	color: cornflowerblue;
+}
+
+.gpb.y {
+	color: yellow;
+}
+
+/* Playstation */
+.gpb.cross {
+	color: cornflowerblue;
+}
+
+.gpb.circle {
+	color: palevioletred;
+}
+
+.gpb.square {
+	color: hotpink;
+}
+
+.gpb.triangle {
+	color: darkseagreen;
+}
+
 /* Special */
 .primary {
 	background: #fafafa;
@@ -205,4 +270,28 @@ select {
 		left: 107%;
 		right: -8%;
 	}
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+	width: 10px;
+	background-color: rgba(100, 100, 100, 0.01);
+}
+
+::-webkit-scrollbar-track {
+	background-color: rgba(200, 200, 200, 1);
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: rgba(0, 0, 0, .5);
+	border: 1px solid rgba(50, 50, 50, .7);
+	border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background-color: rgba(0, 0, 0, .4);
+}
+
+::-webkit-scrollbar-thumb:active {
+	background-color: rgba(0, 0, 0, .5);
 }
