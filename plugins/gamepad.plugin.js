@@ -5,6 +5,7 @@
 * */
 
 let gamepads = {}; // propagated with gamepad objects
+let enabled = true;
 
 if (!("getGamepads" in navigator)) {
 	console.warn("Gamepad Plugin", "Gamepad access seems to be restricted or unsupported by this browser.", navigator.keyboard);
@@ -26,13 +27,15 @@ const buttonIndex = {
 	"right-trigger": "7", // RT | R2
 	"options-left": "8", // share | view
 	"options": "9", // options | menu
-	"left-stick": "10", // Left-stick pressed
-	"right-stick": "11", // Right-stick pressed
+	"left-stick-down": "10", // Left-stick pressed
+	"right-stick-down": "11", // Right-stick pressed
 	"dpad-up": "12", // D-Pad
 	"dpad-down": "13",
 	"dpad-left": "14",
 	"dpad-right": "15",
-	"logo": "16" // Xbox, PlayStation logo buttons
+	"logo": "16", // Xbox, PlayStation logo buttons
+	"left-stick": false,
+	"right-stick": false
 };
 
 const stickAxes = {
@@ -47,6 +50,9 @@ function gamepadHandler(event, connecting) {
 	// gamepad === navigator.getGamepads()[gamepad.index]
 	if (connecting) {
 		gamepads[gamepad.index] = gamepad;
+		if (gamepad[gamepad.index].mapping !== "standard") {
+			console.warn("gamepadHandler", "Gamepad " + gamepad.index + " does not have standard mapping.", gamepad[gamepad.index].mapping);
+		}
 	} else {
 		delete gamepads[gamepad.index];
 	}
@@ -54,15 +60,19 @@ function gamepadHandler(event, connecting) {
 
 window.addEventListener("gamepadconnected", function (e) {
 	gamepadHandler(e, true);
-	Console.info("gamepadHandler", "Gamepad " + e.gamepad.index + " has been connected.", e);
+	console.info("gamepadHandler", "Gamepad " + e.gamepad.index + " has been connected.", e);
 }, false);
 window.addEventListener("gamepaddisconnected", function (e) {
 	gamepadHandler(e, false);
-	Console.warn("gamepadHandler", "Gamepad " + e.gamepad.index + " has been disconnected.", e);
+	console.warn("gamepadHandler", "Gamepad " + e.gamepad.index + " has been disconnected.", e);
 }, false);
 
-
 class Gamepad {
+	constructor(player) {
+		this.player = player;
+		this.enabled = true;
+	}
+
 	on(buttons, state, callback) {
 		if (!Array.isArray(buttons)) {
 			console.error("Gamepad.on()", "Buttons must be specified as an Array (eg. ['a']).", buttons);
@@ -77,28 +87,70 @@ class Gamepad {
 				console.error("Gamepad.on()", "Unknown button '" + button + "'. See 'buttonIndex'.", this);
 				return;
 			}
-			switch (state) {
-				case "pressed":
-					state = "keypress";
-					break;
-				case "held":
-					state = "keydown";
-					break;
-				case "released":
-					state = "keyup";
-					break;
-				default:
-					state = null;
-			}
-			if(callback) {
-				gamepads.forEach(function(gamepad) {
-					setInterval(function() {
-						if(gamepad.buttons[button].pressed) {
-							callback();
+			if (callback) {
+				setInterval(function () {
+					if (this.enabled === true) {
+						if (button === "left-stick" || button === "right-stick") {
+							if (button === "left-stick") {
+								let x = gamepads[this.player].axes[0];
+								let y = gamepads[this.player].axes[1];
+								switch (state) {
+									case "up":
+										if (y === -1) {
+											callback();
+										}
+										break;
+									case "left":
+										if (x === -1) {
+											callback();
+										}
+										break;
+									case "down":
+										if (y === 1) {
+											callback();
+										}
+										break;
+									case "right":
+										if (x === 1) {
+											callback();
+										}
+										break;
+								}
+							} else if (button === "right-stick") {
+							}
+						} else {
+							if (gamepads[this.player].buttons[button].pressed) {
+								callback();
+							}
 						}
-					}, 100);
-				});
+					}
+				}, 100);
+
 			}
 		});
+	}
+
+	stick(which) {
+		if (which !== "left" || which !== "right") {
+			return;
+		}
+		let x = gamepads[this.player].axes[0];
+		let y = gamepads[this.player].axes[1];
+		return {
+			x: x,
+			y: y
+		};
+	}
+
+	status() {
+		return gamepads[this.player].connected;
+	}
+
+	enable() {
+		this.enabled = true;
+	}
+
+	disable() {
+		this.enabled = false;
 	}
 }

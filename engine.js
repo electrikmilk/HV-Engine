@@ -86,8 +86,10 @@ class Game {
 
 /* Scenes can extend this class */
 class Scene {
-	constructor() {
+	constructor(options) {
+		this.layers = [];
 		this.container = $(".viewport .scene-container");
+
 	}
 
 	show(transition) {
@@ -111,7 +113,10 @@ class Scene {
 }
 
 class Sprite {
-	constructor() {
+	constructor(options) {
+		// set position
+		if (this.options.x && this.options.y) {
 
+		}
 	}
 }

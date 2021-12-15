@@ -2,6 +2,7 @@
 * Keyboard Plugin
 *
 * Add this to your project if you would like to support keyboard input
+* Mainly uses the Mousetrap library for its functionality, visit craig.is/killing/mice for details
 * */
 
 let keyboard;
@@ -46,5 +47,45 @@ class Keyboard {
 				callback(e);
 			}
 		}, state);
+	}
+
+	// Trigger key press
+	trigger(keys) {
+		if (!Array.isArray(keys)) {
+			console.error("Keyboard.trigger()", "Keys must be specified as an Array (eg. ['z']).", keys);
+			return;
+		}
+		if (keys.length === 0) {
+			console.error("Keyboard.trigger()", "No keys specified, Array is empty.", keys);
+			return;
+		}
+		Mousetrap.trigger(keys.join("+"));
+	}
+
+	// Unbind triggers
+	unbind(keys) {
+		if (!Array.isArray(keys)) {
+			console.error("Keyboard.unbind()", "Keys must be specified as an Array (eg. ['z']).", keys);
+			return;
+		}
+		if (keys.length === 0) {
+			console.error("Keyboard.unbind()", "No keys specified, Array is empty.", keys);
+			return;
+		}
+		Mousetrap.unbind(keys.join("+"));
+	}
+
+	// Un-pause keyboard binds
+	enable() {
+		Mousetrap.unpause();
+	}
+
+	// Pause keyboard binds
+	disable() {
+		Mousetrap.pause();
+	}
+
+	reset() {
+		Mousetrap.reset();
 	}
 }
