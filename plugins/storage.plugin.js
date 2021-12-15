@@ -5,40 +5,55 @@
 * This makes it easier to use global variables across scenes.
 * */
 
-if(!window.localStorage) {
-	console.warn("Storage plugin","localStorage unsupported.",window);
+if (!window.localStorage) {
+	console.warn("Storage plugin", "The localStorage API is restricted or unsupported by this browser. Only Storage.session will work.", window);
 }
 
 let session = [];
 
-let Session = {
-	get: function(key) {
-		return session[key];
-	},
-	set: function(key,value) {
-		session[key] = value;
-	},
-	remove: function(key) {
-		const index = session.indexOf(key);
-		if (index > -1) {
-			session.splice(index, 1);
-		}
-	}
-};
-
 let Storage = {
-	get: function(key) {
-		key = window.localStorage.getItem(key)
-		if (key) {
-			return key;
-		} else {
-			return false;
+	// Temporary session storage
+	session: {
+		get: function (key) {
+			if (session[key] !== undefined) {
+				return session[key];
+			} else {
+				return false;
+			}
+		},
+		set: function (key, value) {
+			session[key] = value;
+		},
+		remove: function (key) {
+			if (session[key] !== undefined) {
+				const index = session.indexOf(key);
+				if (index > -1) {
+					session.splice(index, 1);
+				}
+			}
 		}
-	}
-	set: function(key,value) {
-		window.localStorage.setItem(key,value);
+		flush() {
+			session = [];
+		}
 	},
-	remove: function(key) {
-		window.localStorage.removeItem(key);
+	// Permanent local storage
+	local: {
+		get: function (key) {
+			key = window.localStorage.getItem(key);
+			if (key) {
+				return key;
+			} else {
+				return false;
+			}
+		}
+		set: function (key, value) {
+			window.localStorage.setItem(key, value);
+		},
+		remove: function (key) {
+			window.localStorage.removeItem(key);
+		}
+		flush() {
+			window.localStorage.clear();
+		}
 	}
 };
