@@ -1,4 +1,4 @@
-# HV2D Engine
+# HV2D
 HTML5 2D game engine
 
 **Status: WIP**
