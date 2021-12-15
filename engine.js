@@ -28,7 +28,6 @@ class Game {
 			console.error("Game.constructor()", "Scenes have not been given as an Array", scenes);
 			return;
 		}
-
 		this.head = $("head");
 		this.body = $("body");
 		this.body.append("<div class='viewport'><div class='scene-container'></div></div>");

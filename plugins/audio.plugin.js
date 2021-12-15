@@ -5,17 +5,17 @@
 * Makes it easier to manage audio and sound effects.
 * */
 
-$(function() {
+$(function () {
 	$("body").prepend("<div class='audio-container'></div>");
 });
 
-let channels = []; // eg. "music","sfx","voices"
+let channels = ["music", "sfx", "voices"]; // default channels
 
-function channel(channel,percent) {
+function channel(channel, percent) {
 	let volume = (parseInt(percent) / 100);
-	let channels = $("[data-channel='"+channel+"']");
-	if(channels.length !== 0) {
-		$("[data-channel='"+channel+"']").prop("volume",volume);
+	let channels = $("[data-channel='" + channel + "']");
+	if (channels.length !== 0) {
+		$("[data-channel='" + channel + "']").prop("volume", volume);
 		return true;
 	} else {
 		return false;
@@ -24,7 +24,7 @@ function channel(channel,percent) {
 
 class Audio {
 	constructor(data) {
-		if(!data) {
+		if (!data) {
 			return;
 		}
 		this.container = $(".audio-container");

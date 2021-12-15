@@ -5,6 +5,13 @@
 * This makes it easier to present the user with options, ask for input, etc. without the need to do them yourself
 * */
 
-class UI {
+let tick = new Audio({
+	src: "engine/res/sfx/tick.wav",
+	channel: "sfx"
+});
 
+class UI {
+	constructor() {
+
+	}
 }
