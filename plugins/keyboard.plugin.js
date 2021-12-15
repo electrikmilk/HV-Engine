@@ -6,15 +6,6 @@
 
 let keyboard;
 
-// const keyMap = {
-// 	"ctrl",
-// 	"shift",
-// 	"w",
-// 	"a",
-// 	"s",
-// 	"d"
-// };
-
 if (!("keyboardPlugin" in navigator && "lock" in navigator.keyboard)) {
 	console.warn("Keyboard Plugin", "Keyboard access seems to be restricted or unsupported by this browser.", navigator.keyboard);
 } else {
@@ -31,12 +22,6 @@ class Keyboard {
 			console.error("Keyboard.on()", "No keys specified, Array is empty.", keys);
 			return;
 		}
-		// keys.forEach(function (key) {
-		// 	if (!(button in keyMap)) {
-		// 		console.error("Gamepad.on()", "Unknown key '" + button + "'. See 'keyMap'.", this);
-		// 		return;
-		// 	}
-		// });
 		switch (state) {
 			case "pressed":
 				state = "keypress";
