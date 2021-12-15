@@ -11,7 +11,7 @@ if (!("getGamepads" in navigator)) {
 }
 
 /*
-* Mix of Xbox/PlayStation control terms for simplicity.
+* Mix of control terms for simplicity.
 * Using A-B-X-Y because it's more standardized, also alternately you'd need to specify "ax", "bo", etc. when they're equivalent
 * Didn't use shorthand, so it's easier to remember and understand
 *  */
@@ -36,11 +36,6 @@ const buttonIndex = {
 	"left-stick": null,
 	"right-stick": null
 };
-
-// const stickAxes = {
-// 	"left": [0, 1],
-// 	"right": [2, 3]
-// };
 
 // Handles gamepads being disconnected and reconnected
 function gamepadHandler(event, connecting) {
@@ -67,11 +62,15 @@ window.addEventListener("gamepaddisconnected", function (e) {
 }, false);
 
 class Gamepad {
+
+	// Init, set player
 	constructor(player) {
 		this.player = player;
 		this.enabled = true;
+		this.intervals = [];
 	}
 
+	// Setup trigger
 	on(buttons, state, callback) {
 		if (!Array.isArray(buttons)) {
 			console.error("Gamepad.on()", "Buttons must be specified as an Array (eg. ['a']).", buttons);
@@ -87,7 +86,7 @@ class Gamepad {
 				return;
 			}
 			if (callback) {
-				setInterval(function () {
+				let interval = setInterval(function () {
 					if (this.enabled === true) {
 						if (button === "left-stick" || button === "right-stick") {
 							let x;
@@ -128,11 +127,12 @@ class Gamepad {
 						}
 					}
 				}, 100);
-
+				this.intervals.push(interval);
 			}
 		});
 	}
 
+	// Get coordinates for each stick
 	stick(which) {
 		if (which !== "left" || which !== "right") {
 			return;
@@ -145,15 +145,25 @@ class Gamepad {
 		};
 	}
 
+	// Check if connected
 	status() {
 		return gamepads[this.player].connected;
 	}
 
+	// Un-pause gamepad
 	enable() {
 		this.enabled = true;
 	}
 
+	// Pause gamepad
 	disable() {
 		this.enabled = false;
+	}
+
+	// Reset all triggers
+	reset() {
+		this.intervals.forEach(function (interval) {
+			clearInterval(interval);
+		});
 	}
 }

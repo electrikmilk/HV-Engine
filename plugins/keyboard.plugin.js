@@ -14,6 +14,7 @@ if (!("keyboardPlugin" in navigator && "lock" in navigator.keyboard)) {
 }
 
 class Keyboard {
+
 	on(keys, state, callback) {
 		if (!Array.isArray(keys)) {
 			console.error("Keyboard.on()", "Keys must be specified as an Array (eg. ['z']).", keys);
