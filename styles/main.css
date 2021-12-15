@@ -81,9 +81,25 @@ ul {
 
 /* Viewport, Scenes, etc. */
 .viewport {
+	z-index: 0;
+	overflow: hidden;
 }
 
-.scene-container {}
+.overlays-container {
+	z-index: 2;
+}
+
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.scene-container {
+	z-index: 1;
+}
 
 .scene {}
 

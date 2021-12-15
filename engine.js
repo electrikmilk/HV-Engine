@@ -14,8 +14,8 @@ const default_plugins = [
 	"mouse",
 	"keyboard",
 	"ui",
-	"storage",
-	"audio"
+	"audio",
+	"storage"
 ];
 
 class Game {
@@ -30,10 +30,9 @@ class Game {
 		}
 		this.head = $("head");
 		this.body = $("body");
-		this.body.append("<div class='viewport'><div class='scene-container'></div></div>");
+		this.body.append("<div class='viewport'><div class='overlays-container'></div><div class='scene-container'></div></div>");
 		this.viewport = $(".viewport");
 		this.scene = $(".scene-container");
-
 		if (!plugins) {
 			this.plugins = default_plugins;
 		} else {
@@ -46,6 +45,11 @@ class Game {
 		this.scenes = scenes;
 		this.sceneIndex = 0;
 		this.load();
+	}
+
+	view(width, height) {
+		if (width) this.viewport.css("width", width);
+		if (height) this.viewport.css("height", height);
 	}
 
 	load(scene, transition) {
@@ -114,15 +118,17 @@ class Scene {
 }
 
 // For menus and static elements (eg. HP bar, etc.)
-// class Overlay {
-// 	constructor() {
-//
-// 	}
-//
-// 	content() {
-//
-// 	}
-// }
+class Overlay {
+	constructor() {
+		this.id = make_id();
+		$(".overlays-container").append("<div class='overlay' id='" + this.id + "'></div>");
+		this.element = $(".overlay#" + this.id);
+	}
+
+	content(html) {
+		this.element.html(html);
+	}
+}
 
 class Sprite {
 	constructor(options) {
