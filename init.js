@@ -5,6 +5,7 @@ console.time(readyMessage);
 
 let resources = {
 	"frameworks": ["jquery", "jquery-ui", "mousetrap", "mousetrap-pause"],
+	"styles": ["main", "ui"],
 	"general": ["engine"]
 };
 
@@ -14,10 +15,10 @@ async function sleep(s) {
 }
 
 function make_id(length = 6) {
-	var result           = '';
-	var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-	var charactersLength = characters.length;
-	for ( var i = 0; i < length; i++ ) {
+	let result = "";
+	let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	let charactersLength = characters.length;
+	for (let i = 0; i < length; i++) {
 		result += characters.charAt(Math.floor(Math.random() *
 			charactersLength));
 	}
@@ -28,17 +29,24 @@ function make_id(length = 6) {
 resources.forEach(function (group) {
 	group.forEach(async function (resource) {
 		const head = document.querySelector("head");
-		let script = document.createElement("script");
-		script.async = true;
-		if (group === "frameworks") {
-			script.src = "/engine/" + group + "/" + resource + ".min.js";
-		} else if (group === "plugins") {
-			script.src = "/engine/" + group + "/" + resource + ".plugin.js";
+		if (group === "styles") {
+			let element = document.createElement("link");
+			element.rel = "stylesheet";
 		} else {
-			script.src = "/engine/" + resource + ".js";
+			let element = document.createElement("script");
+			element.type = "text/javascript";
+			element.async = true;
 		}
-		script.type = "text/javascript";
-		head.appendChild(script);
+		if (group === "frameworks") {
+			element.src = "/engine/" + group + "/" + resource + ".min.js";
+		} else if (group === "plugins") {
+			element.src = "/engine/" + group + "/" + resource + ".plugin.js";
+		} else if (group === "styles") {
+			element.href = "/engine/" + group + "/" + resource + ".css";
+		} else {
+			element.src = "/engine/" + resource + ".js";
+		}
+		head.appendChild(element);
 		await sleep(1);
 	});
 });

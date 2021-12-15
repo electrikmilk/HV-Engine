@@ -15,6 +15,7 @@ if (!("keyboardPlugin" in navigator && "lock" in navigator.keyboard)) {
 
 class Keyboard {
 
+	// Setup triggers
 	on(keys, state, callback) {
 		if (!Array.isArray(keys)) {
 			console.error("Keyboard.on()", "Keys must be specified as an Array (eg. ['z']).", keys);
@@ -86,6 +87,7 @@ class Keyboard {
 		Mousetrap.pause();
 	}
 
+	// Reset all triggers
 	reset() {
 		Mousetrap.reset();
 	}
