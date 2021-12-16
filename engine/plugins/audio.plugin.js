@@ -11,6 +11,7 @@ $(function () {
 
 let channels = ["music", "sfx", "voices"]; // default channels
 
+// Change volume for all audio in the channel
 function channel(channel, percent) {
 	let volume = (parseInt(percent) / 100);
 	let channels = $("[data-channel='" + channel + "']");
@@ -30,6 +31,8 @@ class Audio {
 		this.container = $(".audio-container");
 		this.id = make_id();
 		this.channel = "master";
+		let loop = "";
+		let autoplay = "";
 		if (!Array.isArray(data)) {
 			this.src = data;
 		} else {
@@ -40,9 +43,35 @@ class Audio {
 					channels.push(this.channel);
 				}
 			}
+			if (data.autoplay) {
+				autoplay = "autoplay";
+			}
+			if (data.loop) {
+				loop = "loop";
+			}
 		}
-		this.container.append("<audio id='" + this.id + "' data-channel='" + this.channel + "' src='" + this.src + "'/>");
+		this.container.append("<audio id='" + this.id + "' data-channel='" + this.channel + "' src='" + this.src + "' " + loop + " " + autoplay + "/>");
 		this.element = $("audio#" + this.id);
+	}
+
+	toggle() {
+		if (this.element.get(0).paused) {
+			this.play();
+		} else {
+			this.pause();
+		}
+	}
+
+	play() {
+		this.element.get(0).play();
+	}
+
+	pause() {
+		this.element.get(0).pause();
+	}
+
+	stop() {
+		this.element.get(0).stop();
 	}
 
 	volume(percent) {
