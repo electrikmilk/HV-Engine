@@ -64,7 +64,7 @@ class Game {
 			that.scenes = scenes;
 			that.sceneIndex = 0;
 			that.load();
-		}, timeout);
+		}, (timeout + 1000));
 	}
 
 	view(width, height) {
@@ -72,7 +72,7 @@ class Game {
 		if (height) this.viewport.css("height", height);
 	}
 
-	load(scene, transition, callback) {
+	load(scene, transition) {
 		if (scene) {
 			if (!this.scenes.includes(scene)) {
 				console.error("[Game.load()]:", "Scene '" + scene + "' has not been defined.", scene);
@@ -92,18 +92,17 @@ class Game {
 				break;
 		}
 		sleep(3);
+		$(".scene").remove();
 		this.scene.html("");
 		let file = this.scenes[this.sceneIndex];
 		console.info("[Game.load()]:", "Loading scene '" + file + "' (" + this.sceneIndex + ")...", file);
 		$.get("scenes/" + file + ".scene.js", function (data, status, xhr) {
 			if (status !== "success") {
 				console.error("[Game.load()]:", "Scene file '" + file + ".scene.js' responded with " + status + ".", [status, xhr]);
-				return;
 			} else {
 				setTimeout(function () {
-					$("head").append("<script type='text/javascript' class='scene' id='" + sceneIndex + "' src='scenes/" + file + ".scene.js'></script>");
-					console.info("[Game.load()]:", "Loaded scene '" + file + "' (" + this.sceneIndex + ")");
-					callback();
+					$("head").append("<script type='text/javascript' class='scene' src='scenes/" + file + ".scene.js'></script>");
+					console.info("[Game.load()]:", "Loaded scene '" + file + "'");
 				}, 1000);
 			}
 		});
