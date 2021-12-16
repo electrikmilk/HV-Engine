@@ -5,16 +5,13 @@
 * This makes it easier to present the user with options, ask for input, etc. without the need to do them yourself
 * */
 
+
+/* WIP */
+
 // for now this will require the audio plugin, as I get into this more I will make this optional if you don't want ur game to have audio
 let tick = new Audio({
 	src: "engine/res/sfx/tick.wav",
 	channel: "sfx"
-});
-
-let button = new Button({
-	label: "Label",
-	type: ""
-
 });
 
 class UI {

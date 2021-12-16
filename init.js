@@ -6,7 +6,7 @@ console.time(readyMessage);
 let resources = {
 	"frameworks": ["jquery", "jquery-ui", "mousetrap", "mousetrap-pause"],
 	"styles": ["main", "ui"],
-	"general": ["engine"]
+	"general": ["engine"] // loaded last intentionally
 };
 
 async function sleep(s) {
