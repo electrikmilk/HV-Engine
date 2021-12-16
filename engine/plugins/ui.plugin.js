@@ -38,7 +38,18 @@ class Menu {
 		// options.items.label;
 		// options.items.description;
 		// options.items.callback;
-		this.overlay = new Overlay("middle-center");
-
+		this.id = make_id();
+		this.layer = new Layer(this.id, "2", "middle-center");
+		this.layer.content("<div class='menu-container' id='" + this.id + "'></div>");
+		this.options = options;
+		this.options.forEach(function (option) {
+			let option_id = make_id();
+			this.layer.find(".menu-container").append("<div class='menu-item' id='" + option_id + "'>" + option.label + "</div>");
+			$(".menu-container#" + this.id + " > .menu-item#" + option_id).on("click", function () {
+				if (option.callback) {
+					option.callback();
+				}
+			});
+		});
 	}
 }

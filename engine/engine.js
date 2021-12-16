@@ -37,7 +37,7 @@ class Game {
 		}
 		this.head = $("head");
 		this.body = $("body");
-		this.body.append("<div class='viewport'><div class='overlays-container'></div><div class='scene-container'></div></div>");
+		this.body.append("<div class='viewport'><div class='scene-container'></div></div>");
 		this.viewport = $(".viewport");
 		this.scene = $(".scene-container");
 		// Load plugins
@@ -60,12 +60,6 @@ class Game {
 	view(width, height) {
 		if (width) this.viewport.css("width", width);
 		if (height) this.viewport.css("height", height);
-	}
-
-	layer(name, index) {
-		if (!layers[name]) {
-			layers[name] = parseInt(index);
-		}
 	}
 
 	load(scene, transition) {
@@ -104,11 +98,8 @@ class Game {
 }
 
 class Scene {
-	constructor(options) {
+	constructor() {
 		this.container = $(".viewport .scene-container");
-		if (options) {
-			if (options.layers) this.layers = options.layers;
-		}
 	}
 
 	start(transition) {
@@ -132,12 +123,14 @@ class Scene {
 	}
 }
 
-// For menus and static elements (eg. HP bar, etc.)
-class Overlay {
-	constructor(align, layer = "overlay") {
+class Layer {
+	constructor(name, index, align = "middle-center") {
 		this.id = make_id();
-		$(".overlays-container").append("<div class='overlay align-" + align + "' id='" + this.id + "' style='z-index:" + (2 + layers[layer]) + "'><div></div></div>");
-		this.element = $(".overlay#" + this.id + " > div");
+		if (!layers[name]) {
+			layers[name] = parseInt(index);
+		}
+		$(".scene-container").append("<div class='layer align-" + align + "' id='" + this.id + "' style='z-index:" + (1 + layers[name]) + "'><div></div></div>");
+		this.element = $(".layer#" + this.id + " > div");
 	}
 
 	content(html) {
