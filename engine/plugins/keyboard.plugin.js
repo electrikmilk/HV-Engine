@@ -5,14 +5,6 @@
 * Mainly uses the Mousetrap library for its functionality, visit craig.is/killing/mice for details
 * */
 
-let keyboard;
-
-if (!("keyboardPlugin" in navigator && "lock" in navigator.keyboard)) {
-	console.warn("[Keyboard Plugin]:", "Keyboard access seems to be restricted or unsupported by this browser.", navigator);
-} else {
-	keyboard = navigator.keyboard;
-}
-
 class Keyboard {
 
 	// Setup triggers
