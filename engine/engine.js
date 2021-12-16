@@ -6,10 +6,6 @@ let rAFStop = window.mozCancelRequestAnimationFrame ||
 	window.webkitCancelRequestAnimationFrame ||
 	window.cancelRequestAnimationFrame;
 
-$(function () {
-	console.timeEnd(readyMessage);
-});
-
 const default_plugins = [
 	"mouse",
 	"keyboard",
@@ -17,13 +13,41 @@ const default_plugins = [
 	"audio",
 	"storage"
 ];
+let active_plugins = []; // to check plugins
 
-let plugins = []; // to check plugins
 let layers = {
 	"background": 1,
 	"foreground": 2,
 	"overlay": 3
 };
+
+$(window).on("load", function () {
+	// Progress bar
+	let bar = $(".progress .determinate");
+	setTimeout(function () {
+		$({
+			property: 0
+		}).animate({
+			property: 105
+		}, {
+			duration: 2000,
+			step: function () {
+				let _percent = Math.round(this.property);
+				bar.css("width", _percent + "%");
+				if (_percent == 105) {
+					bar.css("width", "100%");
+				}
+			},
+			complete: function () {
+				bar.css("width", "100% !important");
+			}
+		});
+	}, 1000);
+});
+
+$(function () {
+	console.timeEnd(readyMessage);
+});
 
 class Game {
 	constructor(scenes, plugins) {
@@ -45,7 +69,7 @@ class Game {
 			this.plugins = default_plugins;
 		} else {
 			this.plugins = plugins;
-			plugins = this.plugins;
+			active_plugins = this.plugins;
 		}
 		this.plugins.forEach(function (plugin) {
 			head.append("<script type='text/javascript' id='" + plugin + "' src='engine/plugins/" + plugin + ".plugin.js'></script>");

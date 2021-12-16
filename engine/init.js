@@ -4,9 +4,10 @@ let readyMessage = "HV-Engine (" + version + ") ready";
 console.time(readyMessage);
 
 let resources = {
-	"frameworks": ["jquery", "jquery-ui", "mousetrap", "mousetrap-pause"],
 	"styles": ["main", "ui"],
-	"general": ["engine"] // loaded last intentionally
+	"frameworks": ["jquery", "jquery-ui", "mousetrap", "mousetrap-pause"],
+	"general": ["engine"],
+	"project": ["project"]
 };
 
 async function sleep(s) {
@@ -26,27 +27,34 @@ function make_id(length = 6) {
 }
 
 /* Load resources */
-resources.forEach(function (group) {
-	group.forEach(async function (resource) {
-		const head = document.querySelector("head");
+
+const head = document.querySelector("head");
+for (var group in resources) {
+	resources[group].forEach(function (resource) {
+		let element;
+		let timeout = 3000;
 		if (group === "styles") {
-			let element = document.createElement("link");
+			element = document.createElement("link");
 			element.rel = "stylesheet";
+			timeout = 100;
 		} else {
-			let element = document.createElement("script");
+			element = document.createElement("script");
 			element.type = "text/javascript";
 			element.async = true;
 		}
 		if (group === "frameworks") {
-			element.src = "/engine/" + group + "/" + resource + ".min.js";
+			element.src = "engine/" + group + "/" + resource + ".min.js";
 		} else if (group === "plugins") {
-			element.src = "/engine/" + group + "/" + resource + ".plugin.js";
+			element.src = "engine/" + group + "/" + resource + ".plugin.js";
 		} else if (group === "styles") {
-			element.href = "/engine/" + group + "/" + resource + ".css";
+			element.href = "engine/" + group + "/" + resource + ".css";
+		} else if (group === "project") {
+			element.href = "project.js";
 		} else {
-			element.src = "/engine/" + resource + ".js";
+			element.src = "engine/" + resource + ".js";
 		}
-		head.appendChild(element);
-		await sleep(1);
+		setTimeout(function () {
+			head.appendChild(element);
+		}, timeout);
 	});
-});
+}
