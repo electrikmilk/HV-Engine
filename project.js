@@ -2,7 +2,9 @@
 
 let scenes = [
 	"menu",
-	"chapter1/act1"
+	"chapter1/act1",
+	"chapter1/act2",
+	"chapter1/act3"
 ];
 
 let plugins = [
