@@ -18,6 +18,13 @@ const default_plugins = [
 	"storage"
 ];
 
+let plugins = []; // to check plugins
+let layers = {
+	"background": 1,
+	"foreground": 2,
+	"overlay": 3
+};
+
 class Game {
 	constructor(scenes, plugins) {
 		if (!scenes) {
@@ -38,6 +45,7 @@ class Game {
 			this.plugins = default_plugins;
 		} else {
 			this.plugins = plugins;
+			plugins = this.plugins;
 		}
 		this.plugins.forEach(function (plugin) {
 			head.append("<script type='text/javascript' id='" + plugin + "' src='engine/plugins/" + plugin + ".plugin.js'></script>");
@@ -52,6 +60,12 @@ class Game {
 	view(width, height) {
 		if (width) this.viewport.css("width", width);
 		if (height) this.viewport.css("height", height);
+	}
+
+	layer(name, index) {
+		if (!layers[name]) {
+			layers[name] = parseInt(index);
+		}
 	}
 
 	load(scene, transition) {
@@ -91,7 +105,6 @@ class Game {
 
 class Scene {
 	constructor(options) {
-		this.layers = ["foreground", "background"]; // default
 		this.container = $(".viewport .scene-container");
 		if (options) {
 			if (options.layers) this.layers = options.layers;
@@ -121,10 +134,10 @@ class Scene {
 
 // For menus and static elements (eg. HP bar, etc.)
 class Overlay {
-	constructor() {
+	constructor(align, layer = "overlay") {
 		this.id = make_id();
-		$(".overlays-container").append("<div class='overlay' id='" + this.id + "'></div>");
-		this.element = $(".overlay#" + this.id);
+		$(".overlays-container").append("<div class='overlay align-" + align + "' id='" + this.id + "' style='z-index:" + (2 + layers[layer]) + "'><div></div></div>");
+		this.element = $(".overlay#" + this.id + " > div");
 	}
 
 	content(html) {

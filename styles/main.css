@@ -69,14 +69,71 @@ ul {
 	padding: 10px;
 }
 
-.align-center {
-	text-align: center;
+/* Align */
+.align-top-center {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
 }
 
-.align-center-flex {
+.align-top-left {
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-start;
+}
+
+.align-top-right {
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-start;
+}
+
+.align-middle-center {
 	display: flex;
 	justify-content: center;
 	align-items: center;
+}
+
+.align-middle-left {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+}
+
+.align-middle-right {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+.align-bottom-center {
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+}
+
+.align-bottom-left {
+	display: flex;
+	justify-content: flex-start;
+	align-items: flex-end;
+}
+
+.align-bottom-right {
+	display: flex;
+	justify-content: flex-end;
+	align-items: flex-end;
+}
+
+.text-left {
+	text-align: left;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.text-right {
+	text-align: right;
 }
 
 /* Viewport, Scenes, etc. */

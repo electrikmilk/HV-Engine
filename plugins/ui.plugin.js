@@ -5,7 +5,6 @@
 * This makes it easier to present the user with options, ask for input, etc. without the need to do them yourself
 * */
 
-
 /* WIP */
 
 // for now this will require the audio plugin, as I get into this more I will make this optional if you don't want ur game to have audio
@@ -39,5 +38,7 @@ class Menu {
 		// options.items.label;
 		// options.items.description;
 		// options.items.callback;
+		this.overlay = new Overlay("middle-center");
+
 	}
 }
