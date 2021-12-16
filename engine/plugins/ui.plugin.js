@@ -33,23 +33,24 @@ class Button {
 
 class Menu {
 	constructor(options) {
-		// $("body").append("<div class='overlay'></div>");
-		// options.items;
-		// options.items.label;
-		// options.items.description;
-		// options.items.callback;
-		this.id = make_id();
-		this.layer = new Layer(this.id, "2", "middle-center");
-		this.layer.content("<div class='menu-container' id='" + this.id + "'></div>");
-		this.options = options;
-		this.options.forEach(function (option) {
-			let option_id = make_id();
-			this.layer.find(".menu-container").append("<div class='menu-item' id='" + option_id + "'>" + option.label + "</div>");
-			$(".menu-container#" + this.id + " > .menu-item#" + option_id).on("click", function () {
-				if (option.callback) {
-					option.callback();
-				}
+		if (options) {
+			let id = make_id();
+			this.id = id;
+			this.layer = new Layer("menu", "2", "middle-center");
+			this.layer.content("<div class='menu-container' id='" + id + "'></div>");
+			options.forEach(function (option) {
+				let option_id = make_id();
+				$(".menu-container#" + id).append("<div class='menu-item' id='" + option_id + "'>" + option.label + "</div>");
+				$(".menu-container#" + id + " > .menu-item#" + option_id).on("click", function () {
+					if (option.callback) {
+						option.callback();
+					}
+				});
+				$(".menu-container#" + id + " > .menu-item").on("hover", function () {
+					tick.play();
+				});
 			});
-		});
+
+		}
 	}
 }
