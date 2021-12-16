@@ -115,12 +115,13 @@ kbd {
 	color: #fafafa;
 	border-radius: 2px;
 	transition: 0.3s all;
+	border: 1px solid transparent;
 }
 
 .menu-item:hover, .menu-item:active, .menu-item:focus {
 	background: #333333;
 	color: #ffffff;
-	border: 1px solid #ababab;
+	border-color: #ababab;
 }
 
 /* Loading indicator */
