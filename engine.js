@@ -33,6 +33,7 @@ class Game {
 		this.body.append("<div class='viewport'><div class='overlays-container'></div><div class='scene-container'></div></div>");
 		this.viewport = $(".viewport");
 		this.scene = $(".scene-container");
+		// Load plugins
 		if (!plugins) {
 			this.plugins = default_plugins;
 		} else {
@@ -42,6 +43,7 @@ class Game {
 			head.append("<script type='text/javascript' id='" + plugin + "' src='engine/plugins/" + plugin + ".plugin.js'></script>");
 			sleep(1);
 		});
+		// Start scenes
 		this.scenes = scenes;
 		this.sceneIndex = 0;
 		this.load();
@@ -87,7 +89,6 @@ class Game {
 	}
 }
 
-/* Scenes can extend this class */
 class Scene {
 	constructor(options) {
 		this.layers = ["foreground", "background"]; // default
@@ -97,21 +98,22 @@ class Scene {
 		}
 	}
 
-	show(transition) {
+	start(transition) {
+		this.loop();
 		switch (transition) {
-			case "fade":
-				this.container.fadeIn();
+			case "cut":
+				this.container.show();
 				break;
 			case "slide":
 				this.container.slideDown();
 				break;
 			default:
-				this.container.show();
+				this.container.fadeIn();
 				break;
 		}
 	}
 
-	/* called once every frame */
+	// Called once every frame
 	loop() {
 		rAF(loop);
 	}
