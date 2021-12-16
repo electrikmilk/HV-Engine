@@ -8,7 +8,7 @@
 let keyboard;
 
 if (!("keyboardPlugin" in navigator && "lock" in navigator.keyboard)) {
-	console.warn("Keyboard Plugin", "Keyboard access seems to be restricted or unsupported by this browser.", navigator);
+	console.warn("[Keyboard Plugin]:", "Keyboard access seems to be restricted or unsupported by this browser.", navigator);
 } else {
 	keyboard = navigator.keyboard;
 }
@@ -18,11 +18,11 @@ class Keyboard {
 	// Setup triggers
 	on(keys, state, callback) {
 		if (!Array.isArray(keys)) {
-			console.error("Keyboard.on()", "Keys must be specified as an Array (eg. ['z']).", keys);
+			console.error("[Keyboard.on()]:", "Keys must be specified as an Array (eg. ['z']).", keys);
 			return;
 		}
 		if (keys.length === 0) {
-			console.error("Keyboard.on()", "No keys specified, Array is empty.", keys);
+			console.error("[Keyboard.on()]:", "No keys specified, Array is empty.", keys);
 			return;
 		}
 		switch (state) {
@@ -54,11 +54,11 @@ class Keyboard {
 	// Trigger key press
 	trigger(keys) {
 		if (!Array.isArray(keys)) {
-			console.error("Keyboard.trigger()", "Keys must be specified as an Array (eg. ['z']).", keys);
+			console.error("[Keyboard.trigger()]:", "Keys must be specified as an Array (eg. ['z']).", keys);
 			return;
 		}
 		if (keys.length === 0) {
-			console.error("Keyboard.trigger()", "No keys specified, Array is empty.", keys);
+			console.error("[Keyboard.trigger()]:", "No keys specified, Array is empty.", keys);
 			return;
 		}
 		Mousetrap.trigger(keys.join("+"));
@@ -67,11 +67,11 @@ class Keyboard {
 	// Unbind triggers
 	unbind(keys) {
 		if (!Array.isArray(keys)) {
-			console.error("Keyboard.unbind()", "Keys must be specified as an Array (eg. ['z']).", keys);
+			console.error("[Keyboard.unbind()]:", "Keys must be specified as an Array (eg. ['z']).", keys);
 			return;
 		}
 		if (keys.length === 0) {
-			console.error("Keyboard.unbind()", "No keys specified, Array is empty.", keys);
+			console.error("[Keyboard.unbind()]:", "No keys specified, Array is empty.", keys);
 			return;
 		}
 		Mousetrap.unbind(keys.join("+"));

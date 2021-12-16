@@ -6,7 +6,7 @@
 * */
 
 if (!window.localStorage) {
-	console.warn("Storage plugin", "The localStorage API is restricted or unsupported by this browser. Only Storage.session will work.", window);
+	console.warn("[Storage plugin]:", "The localStorage API is restricted or unsupported by this browser. Only Storage.session will work.", window);
 }
 
 let session = [];
@@ -31,7 +31,7 @@ let Storage = {
 					session.splice(index, 1);
 				}
 			}
-		}
+		},
 		flush() {
 			session = [];
 		}
@@ -45,13 +45,13 @@ let Storage = {
 			} else {
 				return false;
 			}
-		}
+		},
 		set: function (key, value) {
 			window.localStorage.setItem(key, value);
 		},
 		remove: function (key) {
 			window.localStorage.removeItem(key);
-		}
+		},
 		flush() {
 			window.localStorage.clear();
 		}

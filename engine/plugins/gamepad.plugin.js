@@ -7,7 +7,7 @@
 let gamepads = {}; // propagated with gamepad objects
 
 if (!("getGamepads" in navigator)) {
-	console.warn("Gamepad Plugin", "Gamepad access seems to be restricted or unsupported by this browser.", navigator);
+	console.warn("[Gamepad Plugin]:", "Gamepad access seems to be restricted or unsupported by this browser.", navigator);
 }
 
 /*
@@ -45,7 +45,7 @@ function gamepadHandler(event, connecting) {
 	if (connecting) {
 		gamepads[gamepad.index] = gamepad;
 		if (gamepad[gamepad.index].mapping !== "standard") {
-			console.warn("gamepadHandler", "Gamepad " + gamepad.index + " does not have standard mapping. Controls may not work as expected.", gamepad[gamepad.index].mapping);
+			console.warn("[gamepadHandler]:", "Gamepad " + gamepad.index + " does not have standard mapping. Controls may not work as expected.", gamepad[gamepad.index].mapping);
 		}
 	} else {
 		delete gamepads[gamepad.index];
@@ -54,11 +54,11 @@ function gamepadHandler(event, connecting) {
 
 window.addEventListener("gamepadconnected", function (e) {
 	gamepadHandler(e, true);
-	console.info("gamepadHandler", "Gamepad " + e.gamepad.index + " has been connected.", e);
+	console.info("[gamepadHandler]:", "Gamepad " + e.gamepad.index + " has been connected.", e);
 }, false);
 window.addEventListener("gamepaddisconnected", function (e) {
 	gamepadHandler(e, false);
-	console.warn("gamepadHandler", "Gamepad " + e.gamepad.index + " has been disconnected.", e);
+	console.warn("[gamepadHandler]:", "Gamepad " + e.gamepad.index + " has been disconnected.", e);
 }, false);
 
 class Gamepad {
@@ -73,16 +73,16 @@ class Gamepad {
 	// Setup trigger
 	on(buttons, state, callback) {
 		if (!Array.isArray(buttons)) {
-			console.error("Gamepad.on()", "Buttons must be specified as an Array (eg. ['a']).", buttons);
+			console.error("[Gamepad.on()]:", "Buttons must be specified as an Array (eg. ['a']).", buttons);
 			return;
 		}
 		if (buttons.length === 0) {
-			console.error("Gamepad.on()", "No buttons specified, Array is empty.", buttons);
+			console.error("[Gamepad.on()]:", "No buttons specified, Array is empty.", buttons);
 			return;
 		}
 		buttons.forEach(function (button) {
 			if (!(button in buttonIndex)) {
-				console.error("Gamepad.on()", "Unknown button '" + button + "'. See 'buttonIndex'.", this);
+				console.error("[Gamepad.on()]:", "Unknown button '" + button + "'. See 'buttonIndex'.", this);
 				return;
 			}
 			if (callback) {

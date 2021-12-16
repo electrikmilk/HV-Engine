@@ -12,7 +12,7 @@ let plugins = [
 	"audio"
 ];
 
-let Game = new Game(scenes, plugins);
+let game = new Game(scenes, plugins);
 
-Game.view("640px", "480px");
+game.view("640px", "480px");
 

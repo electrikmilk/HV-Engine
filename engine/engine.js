@@ -13,6 +13,7 @@ const default_plugins = [
 	"audio",
 	"storage"
 ];
+
 let active_plugins = []; // to check plugins
 
 let layers = {
@@ -21,49 +22,26 @@ let layers = {
 	"overlay": 3
 };
 
-$(window).on("load", function () {
-	// Progress bar
-	let bar = $(".progress .determinate");
-	setTimeout(function () {
-		$({
-			property: 0
-		}).animate({
-			property: 105
-		}, {
-			duration: 2000,
-			step: function () {
-				let _percent = Math.round(this.property);
-				bar.css("width", _percent + "%");
-				if (_percent == 105) {
-					bar.css("width", "100%");
-				}
-			},
-			complete: function () {
-				bar.css("width", "100% !important");
-			}
-		});
-	}, 1000);
-});
-
 $(function () {
 	console.timeEnd(readyMessage);
+	// Progress bar
+	$(".progress .determinate").css("width", "25%");
 });
 
 class Game {
 	constructor(scenes, plugins) {
 		if (!scenes) {
-			console.error("Game.constructor()", "No scenes have been defined", scenes);
+			console.error("[Game.constructor()]:", "No scenes have been defined", scenes);
 			return;
 		}
 		if (!Array.isArray(scenes)) {
-			console.error("Game.constructor()", "Scenes have not been given as an Array", scenes);
+			console.error("[Game.constructor()]:", "Scenes have not been given as an Array", scenes);
 			return;
 		}
-		this.head = $("head");
-		this.body = $("body");
-		this.body.append("<div class='viewport'><div class='scene-container'></div></div>");
 		this.viewport = $(".viewport");
 		this.scene = $(".scene-container");
+		$("p").text("Loading plugins...");
+		$(".progress .determinate").css("width", "50%");
 		// Load plugins
 		if (!plugins) {
 			this.plugins = default_plugins;
@@ -71,14 +49,22 @@ class Game {
 			this.plugins = plugins;
 			active_plugins = this.plugins;
 		}
+		let timeout = 1000;
 		this.plugins.forEach(function (plugin) {
-			head.append("<script type='text/javascript' id='" + plugin + "' src='engine/plugins/" + plugin + ".plugin.js'></script>");
-			sleep(1);
+			setTimeout(function () {
+				$("head").append("<script type='text/javascript' id='" + plugin + "' src='engine/plugins/" + plugin + ".plugin.js'></script>\n");
+			}, (timeout + 1000));
 		});
-		// Start scenes
-		this.scenes = scenes;
-		this.sceneIndex = 0;
-		this.load();
+		$(".progress .determinate").css("width", "100%");
+		console.info("[Game.constructor()]:", "Project initialized. Loading first scene...", [scenes, plugins]);
+		let that = this;
+		setTimeout(function () {
+			$("body").html("<div class='viewport'><div class='scene-container'></div></div>");
+			// Start scenes
+			that.scenes = scenes;
+			that.sceneIndex = 0;
+			that.load();
+		}, timeout);
 	}
 
 	view(width, height) {
@@ -86,10 +72,10 @@ class Game {
 		if (height) this.viewport.css("height", height);
 	}
 
-	load(scene, transition) {
+	load(scene, transition, callback) {
 		if (scene) {
 			if (!this.scenes.includes(scene)) {
-				console.error("Game.load()", "Scene '" + scene + "' has not been defined.", scene);
+				console.error("[Game.load()]:", "Scene '" + scene + "' has not been defined.", scene);
 				return;
 			}
 			this.sceneIndex = this.scenes.indexOf(scene);
@@ -107,15 +93,18 @@ class Game {
 		}
 		sleep(3);
 		this.scene.html("");
-		let file = this.scenes[sceneIndex];
-		console.info("Game.load()", "Loading scene '" + file + "' (" + this.sceneIndex + ")...", file);
+		let file = this.scenes[this.sceneIndex];
+		console.info("[Game.load()]:", "Loading scene '" + file + "' (" + this.sceneIndex + ")...", file);
 		$.get("scenes/" + file + ".scene.js", function (data, status, xhr) {
 			if (status !== "success") {
-				console.error("Game.load()", "Scene file '" + file + ".scene.js' responded with " + status + ".", [status, xhr]);
+				console.error("[Game.load()]:", "Scene file '" + file + ".scene.js' responded with " + status + ".", [status, xhr]);
 				return;
 			} else {
-				this.head.append("<script type='text/javascript' class='scene' id='" + sceneIndex + "' src='scenes/" + file + ".scene.js'></script>");
-				console.info("Game.load()", "Loaded scene '" + file + "' (" + this.sceneIndex + ")");
+				setTimeout(function () {
+					$("head").append("<script type='text/javascript' class='scene' id='" + sceneIndex + "' src='scenes/" + file + ".scene.js'></script>");
+					console.info("[Game.load()]:", "Loaded scene '" + file + "' (" + this.sceneIndex + ")");
+					callback();
+				}, 1000);
 			}
 		});
 	}

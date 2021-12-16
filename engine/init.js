@@ -29,18 +29,19 @@ function make_id(length = 6) {
 /* Load resources */
 
 const head = document.querySelector("head");
+let timeout = 1000;
 for (var group in resources) {
 	resources[group].forEach(function (resource) {
 		let element;
-		let timeout = 3000;
 		if (group === "styles") {
 			element = document.createElement("link");
 			element.rel = "stylesheet";
-			timeout = 100;
+			timeout = 0;
 		} else {
 			element = document.createElement("script");
 			element.type = "text/javascript";
 			element.async = true;
+			timeout = timeout + 500;
 		}
 		if (group === "frameworks") {
 			element.src = "engine/" + group + "/" + resource + ".min.js";
@@ -49,7 +50,7 @@ for (var group in resources) {
 		} else if (group === "styles") {
 			element.href = "engine/" + group + "/" + resource + ".css";
 		} else if (group === "project") {
-			element.href = "project.js";
+			element.src = "project.js";
 		} else {
 			element.src = "engine/" + resource + ".js";
 		}
