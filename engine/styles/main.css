@@ -1,7 +1,6 @@
 /*
  * Main Stylesheet
- * This is required for the engine to work correctly visually.
- * Styles the body and the viewport to be responsive and work with the engine.
+ * This is required for the engine to look correct visually.
  */
 * {
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -138,14 +137,18 @@ ul {
 }
 
 /* Viewport, Scenes, etc. */
+.container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: auto;
+	width: 100vw;
+	height: 100vh;
+}
+
 .viewport {
 	z-index: 0;
 	overflow: hidden;
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
 	width: 640px;
 	height: 480px;
 }

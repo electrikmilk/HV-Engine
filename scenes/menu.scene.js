@@ -1,8 +1,8 @@
 let scene = new Scene();
 
 let music = new Audio({
-	src: "example/tick.wav",
-	channel: "sfx"
+	src: "example/music.mp3",
+	channel: "music"
 });
 
 let menu = new Menu([

@@ -103,6 +103,7 @@ kbd {
 
 /* Menus */
 .menu-container {
+	width: 400px;
 }
 
 .menu-item {
@@ -110,7 +111,6 @@ kbd {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	font-size: 20px;
 	padding: 10px 25px;
 	color: #fafafa;
 	border-radius: 2px;

@@ -59,7 +59,7 @@ class Game {
 		console.info("[Game.constructor()]:", "Project initialized. Loading first scene...", [scenes, plugins]);
 		let that = this;
 		setTimeout(function () {
-			$("body").html("<div class='viewport'><div class='scene-container'></div></div>");
+			$("body").html("<div class='container'><div class='viewport'><div class='scene-container'></div></div></div>");
 			// Start scenes
 			that.scenes = scenes;
 			that.sceneIndex = 0;
