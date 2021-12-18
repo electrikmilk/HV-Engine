@@ -9,6 +9,7 @@ let scenes = [
 
 let plugins = [
 	"keyboard",
+	"mouse",
 	"storage",
 	"ui",
 	"audio"
