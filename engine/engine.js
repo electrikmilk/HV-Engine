@@ -150,11 +150,37 @@ class Layer {
 	}
 }
 
-class Sprite {
+class Objects {
 	constructor(options) {
-		// set position
-		if (this.options.x && this.options.y) {
-
+		if(!options) {
+			return;
 		}
+		this.id = make_id();
+		$("body").append("<div class='object' id='"+this.id+"'></div>");
+		this.element = $("div.object#"+this.id);
+	}
+	set() {
+
+	}
+	get() {
+
+	}
+	effect() {
+
+	}
+}
+
+class Sprite extends Objects {
+	constructor(options) {
+		super(options);
+	}
+	move(direction,amount) {
+
+	}
+}
+
+class Text extends Objects {
+	constructor(options) {
+		super(options);
 	}
 }
