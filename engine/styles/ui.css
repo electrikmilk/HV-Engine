@@ -116,6 +116,8 @@ kbd {
 	border-radius: 2px;
 	transition: 0.3s all;
 	border: 1px solid transparent;
+	user-select: none;
+	-webkit-user-select: none;
 }
 
 .menu-item:hover, .menu-item:active, .menu-item:focus {
