@@ -14,18 +14,30 @@ const default_plugins = [
 	"storage"
 ];
 
-let active_plugins = []; // to check plugins
+// Plugin list
+let active_plugins = [];
 
-let layers = {
-	"background": 1,
-	"foreground": 2,
-	"overlay": 3
-};
+// Default layers
+let layers = [
+	{
+		name: "background",
+		index: 1
+	},
+	{
+		name: "foreground",
+		index: 2
+	}
+];
+
 
 $(function () {
 	console.timeEnd(readyMessage);
 	// Progress bar
 	$(".progress .determinate").css("width", "25%");
+	// Add default layers
+	for(var layer in layers) {
+		layers.object = new Layer(layer.name, layer.index, false);
+	}
 });
 
 class Game {
@@ -141,12 +153,31 @@ class Layer {
 		if (!layers[name]) {
 			layers[name] = parseInt(index);
 		}
-		$(".scene-container").append("<div class='layer align-" + align + "' id='" + this.id + "' style='z-index:" + (1 + layers[name]) + "'><div></div></div>");
+		if(align) {
+			align = "align-"+align;
+		}
+		$(".scene-container").append("<div class='layer " + align + "' id='" + this.id + "' style='z-index:" + (1 + layers[name]) + "'><div></div></div>");
 		this.element = $(".layer#" + this.id + " > div");
+	}
+
+	align(direction) {
+		this.element.parent().attr("class","layer align-"+direction);
 	}
 
 	content(html) {
 		this.element.html(html);
+	}
+
+	add(html,prepend = false) {
+		if(prepend === false) {
+			this.element.append(html);
+		} else {
+			this.element.prepend(html);
+		}
+	}
+
+	remove(selector) {
+		this.element.find(selector).remove();
 	}
 }
 
@@ -156,17 +187,64 @@ class Objects {
 			return;
 		}
 		this.id = make_id();
-		$("body").append("<div class='object' id='"+this.id+"'></div>");
-		this.element = $("div.object#"+this.id);
+		layers[1].object.add("<div class='object' id='"+this.id+"'></div>");
 	}
-	set() {
+
+	object() {
+		return $("div.object#"+this.id);
+	}
+
+	set(key,value) {
+		switch (key) {
+			case "background":
+				if(value.includes("/")) {
+					// url
+					this.object().css("background-image","url("+value+")");
+				} else {
+					// color
+					this.object().css("background-color",value);
+				}
+				break;
+			case "stroke":
+				if(value.color) {
+					this.object().css("border-color",value.color);
+				}
+				if(value.width) {
+					this.object().css("border-color",value.width);
+				}
+				break;
+			case "rounding":
+				this.object().css("border-radius",value);
+				break;
+			case "padding": {
+				this.object().css("padding",value);
+				break;
+			}
+			case "margin": {
+				this.object().css("margin",value);
+				break;
+			}
+			case "width": {
+				this.object().css("width",value);
+				break;
+			}
+			case "height": {
+				this.object().css("height",value);
+				break
+			}
+			default:
+				break;
+		}
+	}
+	get(key) {
 
 	}
-	get() {
+	effect(type) {
+		switch (type) {
+			case "":
 
-	}
-	effect() {
-
+				break;
+		}
 	}
 }
 
@@ -182,5 +260,46 @@ class Sprite extends Objects {
 class Text extends Objects {
 	constructor(options) {
 		super(options);
+		super.set("padding","5px");
+	}
+	set(key,value) {
+		super.set(key,value);
+		switch (key) {
+			case "text":
+				if(super.object().find("p").length === 0) {
+					super.object().prepend("<p>"+value+"</p>");
+				} else {
+					super.object().find("p").html(value);
+				}
+				break;
+			case "title":
+				if(super.object().find("h3").length === 0) {
+					super.object().prepend("<h3>"+value+"</h3>");
+				} else {
+					super.object().find("h3").html(value);
+				}
+				break;
+		}
+	}
+	get(key) {
+		super.get(key);
+		switch (key) {
+			case "text":
+				let text = super.object().find("p");
+				if(text.length !== 0) {
+					return text.html();
+				} else {
+					return false;
+				}
+				break;
+			case "title":
+				let title = super.object().find("h3");
+				if(title.length !== 0) {
+					return title.html();
+				} else {
+					return false;
+				}
+				break;
+		}
 	}
 }
