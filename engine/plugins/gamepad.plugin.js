@@ -16,23 +16,23 @@ if (!("getGamepads" in navigator)) {
 * Didn't use shorthand, so it's easier to remember and understand
 *  */
 const buttonIndex = {
-	"a": "0", // X - cross
-	"b": "1", // O - circle
-	"x": "2", // □ - square
-	"y": "3", // △ - triangle
-	"left-shoulder": "4", // LB | L1
-	"right-shoulder": "5", // RB | R1
-	"left-trigger": "6", // LT | L2
-	"right-trigger": "7", // RT | R2
-	"options-left": "8", // share | view
-	"options-right": "9", // options | menu
-	"left-stick-down": "10", // Left-stick pressed
-	"right-stick-down": "11", // Right-stick pressed
-	"dpad-up": "12", // D-Pad
-	"dpad-down": "13",
-	"dpad-left": "14",
-	"dpad-right": "15",
-	"logo": "16", // Xbox, PlayStation logo buttons
+	"a": 0, // X - cross
+	"b": 1, // O - circle
+	"x": 2, // □ - square
+	"y": 3, // △ - triangle
+	"left-shoulder": 4, // LB | L1
+	"right-shoulder": 5, // RB | R1
+	"left-trigger": 6, // LT | L2
+	"right-trigger": 7, // RT | R2
+	"options-left": 8, // share | view
+	"options-right": 9, // options | menu
+	"left-stick-down": 10, // Left-stick pressed
+	"right-stick-down": 11, // Right-stick pressed
+	"dpad-up": 12, // D-Pad
+	"dpad-down": 13,
+	"dpad-left": 14,
+	"dpad-right": 15,
+	"logo": 16, // Xbox, PlayStation logo buttons
 	"left-stick": null,
 	"right-stick": null
 };
@@ -72,6 +72,7 @@ class Gamepad {
 
 	// Setup trigger
 	on(buttons, state, callback) {
+		let interval;
 		if (!Array.isArray(buttons)) {
 			console.error("[Gamepad.on()]:", "Buttons must be specified as an Array (eg. ['a']).", buttons);
 			return;
@@ -86,7 +87,7 @@ class Gamepad {
 				return;
 			}
 			if (callback) {
-				let interval = setInterval(function () {
+				interval = setInterval(function () {
 					if (this.enabled === true) {
 						if (button === "left-stick" || button === "right-stick") {
 							let x;
@@ -121,15 +122,15 @@ class Gamepad {
 									break;
 							}
 						} else {
-							if (gamepads[this.player].buttons[button].pressed) {
+							if (gamepads[this.player].buttons[buttonIndex[button]].pressed) {
 								callback();
 							}
 						}
 					}
 				}, 100);
-				this.intervals.push(interval);
 			}
 		});
+		this.intervals.push(interval);
 	}
 
 	// Get coordinates for each stick

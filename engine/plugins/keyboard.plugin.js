@@ -5,8 +5,7 @@
 * Mainly uses the Mousetrap library for its functionality, visit craig.is/killing/mice for details
 * */
 
-class Keyboard {
-
+let Keyboard = {
 	// Setup triggers
 	on(keys, state, callback) {
 		if (!Array.isArray(keys)) {
@@ -18,17 +17,17 @@ class Keyboard {
 			return;
 		}
 		switch (state) {
-			case "pressed":
+			case "press":
 				state = "keypress";
 				break;
-			case "held":
+			case "hold":
 				state = "keydown";
 				break;
-			case "released":
+			case "release":
 				state = "keyup";
 				break;
 			default:
-				state = null;
+				state = "keypress";
 		}
 		Mousetrap.bind(keys.join("+"), function (e) {
 			if (e.preventDefault) {
@@ -41,8 +40,7 @@ class Keyboard {
 				callback(e);
 			}
 		}, state);
-	}
-
+	},
 	// Trigger key press
 	trigger(keys) {
 		if (!Array.isArray(keys)) {
@@ -54,8 +52,7 @@ class Keyboard {
 			return;
 		}
 		Mousetrap.trigger(keys.join("+"));
-	}
-
+	},
 	// Unbind triggers
 	unbind(keys) {
 		if (!Array.isArray(keys)) {
@@ -67,18 +64,15 @@ class Keyboard {
 			return;
 		}
 		Mousetrap.unbind(keys.join("+"));
-	}
-
+	},
 	// Un-pause keyboard binds
 	enable() {
 		Mousetrap.unpause();
-	}
-
+	},
 	// Pause keyboard binds
 	disable() {
 		Mousetrap.pause();
-	}
-
+	},
 	// Reset all triggers
 	reset() {
 		Mousetrap.reset();

@@ -5,6 +5,20 @@ let music = new Audio({
 	channel: "music"
 });
 
+let player1 = new Gamepad(1);
+
+player1.on(["a"],"press",function() {
+	console.log("a");
+});
+
+Keyboard.on(["w"],"press",function() {
+	console.log("pressed w");
+});
+
+Mouse.move(function(x,y) {
+	// console.log(x,y);
+});
+
 let menu = new Menu([
 	{
 		label: "Start Game",

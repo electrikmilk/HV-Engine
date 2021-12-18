@@ -33,9 +33,7 @@ class Audio {
 		this.channel = "master";
 		let loop = "";
 		let autoplay = "";
-		if (!Array.isArray(data)) {
-			this.src = data;
-		} else {
+		if (data.constructor == Object) {
 			this.src = data.src;
 			if (data.channel) {
 				this.channel = data.channel;
@@ -49,6 +47,8 @@ class Audio {
 			if (data.loop) {
 				loop = "loop";
 			}
+		} else {
+			this.src = data;
 		}
 		this.container.append("<audio id='" + this.id + "' data-channel='" + this.channel + "' src='" + this.src + "' " + loop + " " + autoplay + "/>");
 		this.element = $("audio#" + this.id);
