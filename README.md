@@ -8,6 +8,8 @@ The focus of this engine is to enable the developer to develop 2D games for the 
 not make the next great HTML5 2D game engine but just to make a game engine I'd like to use and maybe others would like
 to use as well.
 
+This project is in its early stages. I have yet to fully test all of its functions. I doubt you could make a very good game using it currently but my goal is to eventually get it to that point. 
+
 ### Plugins
 
 Plugins are capabilities given to the scenes.
@@ -19,7 +21,7 @@ Plugins are capabilities given to the scenes.
 
 ### Project Setup
 
-To setup, add this repository to your project and name it something like `engine`. In your projects `index.html` file,
+To set up, add this repository to your project and name it something like `engine`. In your projects `index.html` file,
 include the `init.js` file...
 
 ```html
