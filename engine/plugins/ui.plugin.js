@@ -7,11 +7,14 @@
 
 /* WIP */
 
-// for now this will require the audio plugin, as I get into this more I will make this optional if you don't want ur game to have audio
-let tick = new Audio({
-	src: "engine/res/sfx/tick.wav",
-	channel: "sfx"
-});
+let tick;
+
+if(active_plugins.includes("audio")) {
+	tick = new Audio({
+		src: "engine/res/sfx/tick.wav",
+		channel: "sfx"
+	});
+}
 
 class UI {
 	constructor(type) {
@@ -46,9 +49,11 @@ class Menu {
 						option.callback();
 					}
 				});
-				$(".menu-container#" + id + " > .menu-item").on("hover", function () {
-					tick.play();
-				});
+				if(active_plugins.includes("audio")) {
+					$(".menu-container#" + id + " > .menu-item").on("mouseenter", function () {
+						tick.play();
+					});
+				}
 			});
 
 		}
