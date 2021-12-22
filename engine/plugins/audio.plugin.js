@@ -28,12 +28,13 @@ class Audio {
 		if (!data) {
 			return;
 		}
-		this.container = $(".audio-container");
 		this.id = make_id();
 		this.channel = "master";
-		let loop = "";
-		let autoplay = "";
-		if (data.constructor == Object) {
+		// create element
+		const container = document.querySelector("div.audio-container");
+		let audio = document.createElement("audio");
+		// set attributes
+		if (data.constructor === Object) {
 			this.src = data.src;
 			if (data.channel) {
 				this.channel = data.channel;
@@ -41,16 +42,19 @@ class Audio {
 					channels.push(this.channel);
 				}
 			}
-			if (data.autoplay) {
-				autoplay = "autoplay";
+			if (data.autoplay && data.autoplay === true) {
+				audio.setAttribute("autoplay",true);
 			}
-			if (data.loop) {
-				loop = "loop";
+			if (data.loop && data.loop === true) {
+				audio.setAttribute("loop",true);
 			}
 		} else {
 			this.src = data;
 		}
-		this.container.append("<audio id='" + this.id + "' data-channel='" + this.channel + "' src='" + this.src + "' " + loop + " " + autoplay + "/>");
+		audio.setAttribute("id",this.id);
+		audio.setAttribute("channel",this.channel);
+		audio.setAttribute("src",this.src);
+		container.appendChild(audio);
 		this.element = $("audio#" + this.id);
 	}
 
