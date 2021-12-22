@@ -112,7 +112,7 @@ class Game {
 
 	exit() {
 		window.stop();
-		window.close();
+		$("body").html("");
 		delete this;
 	}
 	
