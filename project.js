@@ -12,11 +12,11 @@ let plugins = [
 	"gamepad",
 	"mouse",
 	"storage",
-	"ui",
-	"audio"
+	"audio",
+	"ui"
 ];
 
 let game = new Game(scenes, plugins);
 
-game.view("640px", "480px");
+game.viewport("640px", "480px");
 
