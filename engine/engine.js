@@ -1,3 +1,4 @@
+let requestFullscreen;
 let rAF = window.mozRequestAnimationFrame ||
 	window.webkitRequestAnimationFrame ||
 	window.requestAnimationFrame;
@@ -9,10 +10,34 @@ let rAFStop = window.mozCancelRequestAnimationFrame ||
 const default_plugins = [
 	"mouse",
 	"keyboard",
-	"ui",
 	"audio",
+	"ui",
 	"storage"
 ];
+
+let color_palette = {
+	"pink":"#F28DB2",
+	"red":"#F21D2F",
+	"orange":"#F28907",
+	"darkorange":"#A65E1F",
+	"yellow":"#F2B807",
+	"green":"#00CC00",
+	"olive":"#8FA65D",
+	"darkolive":"#384001",
+	"seagreen":"#0BE0A8",
+	"cyan":"#0CE6EA",
+	"blue":"#527AF2",
+	"darkblue":"#2D3CAD",
+	"indigo":"#5F49F2",
+	"purple":"#A85FD9",
+	"darkpurple":"#582F68",
+	"brown":"#A65E1F",
+	"darkbrown":"#592202",
+	"lightgrey":"#888888",
+	"grey":"#555555",
+	"darkgrey":"#333333",
+	"black":"#121212"
+};
 
 // Plugin list
 let active_plugins = [];
@@ -50,7 +75,10 @@ class Game {
 			console.error("[Game.constructor()]:", "Scenes have not been given as an Array", scenes);
 			return;
 		}
-		this.viewport = $(".viewport");
+		if(!plugins.includes("objects")) {
+			plugins.unshift("objects");
+		}
+		this.view = $(".viewport");
 		this.scene = $(".scene-container");
 		$("p").text("Loading plugins...");
 		$(".progress .determinate").css("width", "50%");
@@ -78,10 +106,52 @@ class Game {
 			that.load();
 		}, (timeout + 1000));
 	}
+	
+	fullscreen(bool) {
+		if (bool === true) {
+			requestFullscreen = setInterval(function() {
+				if ((window.fullScreen) || (window.innerWidth == screen.width && window.innerHeight == screen.height)) {
+					clearInterval(requestFullscreen);
+				} else {
+					let elem = document.documentElement;
+					if (elem.requestFullscreen) {
+						elem.requestFullscreen();
+					} else if (elem.webkitRequestFullscreen) {
+						elem.webkitRequestFullscreen();
+					} else if (elem.msRequestFullscreen) {
+						elem.msRequestFullscreen();
+					}
+				}
+			}, 2500);
+		} else {
+			if (requestFullscreen) {
+				clearInterval(requestFullscreen);
+			}
+			if (document.exitFullscreen) {
+				document.exitFullscreen();
+			} else if (document.webkitExitFullscreen) {
+				document.webkitExitFullscreen();
+			} else if (document.msExitFullscreen) {
+				document.msExitFullscreen();
+			}
+		}
+	}
 
-	view(width, height) {
-		if (width) this.viewport.css("width", width);
-		if (height) this.viewport.css("height", height);
+	viewport(width, height) {
+		if (width) this.view.css("width", width);
+		if (height) this.view.css("height", height);
+	}
+
+	async shake(deg = 5, between = 100) {
+		this.view.css("transform", "rotate(" + deg + "deg)");
+		await sleep(between);
+		this.view.css("transform", "rotate(-" + deg + "deg)");
+		await sleep(between);
+		this.view.css("transform", "rotate(" + deg + "deg)");
+		await sleep(between);
+		this.view.css("transform", "rotate(-" + deg + "deg)");
+		await sleep(between);
+		this.view.css("transform", "");
 	}
 
 	load(scene, transition) {
@@ -178,128 +248,5 @@ class Layer {
 
 	remove(selector) {
 		this.element.find(selector).remove();
-	}
-}
-
-class Objects {
-	constructor(options) {
-		if(!options) {
-			return;
-		}
-		this.id = make_id();
-		layers[1].object.add("<div class='object' id='"+this.id+"'></div>");
-	}
-
-	object() {
-		return $("div.object#"+this.id);
-	}
-
-	set(key,value) {
-		switch (key) {
-			case "background":
-				if(value.includes("/")) {
-					// url
-					this.object().css("background-image","url("+value+")");
-				} else {
-					// color
-					this.object().css("background-color",value);
-				}
-				break;
-			case "stroke":
-				if(value.color) {
-					this.object().css("border-color",value.color);
-				}
-				if(value.width) {
-					this.object().css("border-color",value.width);
-				}
-				break;
-			case "rounding":
-				this.object().css("border-radius",value);
-				break;
-			case "padding": {
-				this.object().css("padding",value);
-				break;
-			}
-			case "margin": {
-				this.object().css("margin",value);
-				break;
-			}
-			case "width": {
-				this.object().css("width",value);
-				break;
-			}
-			case "height": {
-				this.object().css("height",value);
-				break
-			}
-			default:
-				break;
-		}
-	}
-	get(key) {
-
-	}
-	effect(type) {
-		switch (type) {
-			case "":
-
-				break;
-		}
-	}
-}
-
-class Sprite extends Objects {
-	constructor(options) {
-		super(options);
-	}
-	move(direction,amount) {
-
-	}
-}
-
-class Text extends Objects {
-	constructor(options) {
-		super(options);
-		super.set("padding","5px");
-	}
-	set(key,value) {
-		super.set(key,value);
-		switch (key) {
-			case "text":
-				if(super.object().find("p").length === 0) {
-					super.object().prepend("<p>"+value+"</p>");
-				} else {
-					super.object().find("p").html(value);
-				}
-				break;
-			case "title":
-				if(super.object().find("h3").length === 0) {
-					super.object().prepend("<h3>"+value+"</h3>");
-				} else {
-					super.object().find("h3").html(value);
-				}
-				break;
-		}
-	}
-	get(key) {
-		super.get(key);
-		switch (key) {
-			case "text":
-				let text = super.object().find("p");
-				if(text.length !== 0) {
-					return text.html();
-				} else {
-					return false;
-				}
-				break;
-			case "title":
-				let title = super.object().find("h3");
-				if(title.length !== 0) {
-					return title.html();
-				} else {
-					return false;
-				}
-				break;
-		}
 	}
 }
