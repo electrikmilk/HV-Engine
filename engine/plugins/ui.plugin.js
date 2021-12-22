@@ -49,13 +49,24 @@ class Menu {
 						option.callback();
 					}
 				});
-				if(active_plugins.includes("audio")) {
-					$(".menu-container#" + id + " > .menu-item").on("mouseenter", function () {
-						tick.play();
+				if(active_plugins.includes("gamepad")) {
+					$(".menu-container#"+id+" .menu-item:first-child").focus();
+					let gp = new Gamepad(1);
+					gp.on(["left-stick"],"up",function() {
+						$(".menu-container#"+id+" .menu-item:focus").prev().focus();
+					});
+					gp.on(["left-stick"],"down",function() {
+						$(".menu-container#"+id+" .menu-item:focus").next().focus();
 					});
 				}
+				if(active_plugins.includes("audio")) { // make sure we can make a sound
+					if(active_plugins.includes("mouse")) { // should we ignore the mouse?
+						$(".menu-container#" + id + " > .menu-item").on("mouseenter", function () {
+							tick.play();
+						});
+					}
+				}
 			});
-
 		}
 	}
 }
