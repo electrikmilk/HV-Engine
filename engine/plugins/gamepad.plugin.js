@@ -1,5 +1,5 @@
 /*
-* Gamepad Plugin
+* Gamepad Plugin (NOT PROPERLY TESTED YET)
 *
 * Add this to your project if you would like to support gamepad input
 * */
