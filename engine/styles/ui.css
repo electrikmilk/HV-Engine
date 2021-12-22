@@ -113,6 +113,7 @@ kbd {
 	text-overflow: ellipsis;
 	padding: 10px 25px;
 	color: #fafafa;
+	margin: 10px 0;
 	border-radius: 2px;
 	transition: 0.3s all;
 	border: 1px solid transparent;
