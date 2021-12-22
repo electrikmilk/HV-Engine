@@ -1,7 +1,7 @@
 let scene = new Scene();
 
 let music = new Audio({
-	src: "example/music.mp3",
+	src: "example/music.wav",
 	channel: "music",
 	autoplay: true
 });
