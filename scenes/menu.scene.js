@@ -2,7 +2,8 @@ let scene = new Scene();
 
 let music = new Audio({
 	src: "example/music.mp3",
-	channel: "music"
+	channel: "music",
+	autoplay: true
 });
 
 let player1 = new Gamepad(1);
@@ -24,7 +25,7 @@ let menu = new Menu([
 		label: "Start Game",
 		callback: function () {
 			// do something
-			console.log("start game");
+			console.log("this would start the game");
 		}
 	}
 ]);
