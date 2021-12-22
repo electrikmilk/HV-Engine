@@ -27,5 +27,19 @@ let menu = new Menu([
 			// do something
 			console.log("this would start the game");
 		}
+	},
+	{
+		label: "Options",
+		callback: function () {
+			// do something
+			console.log("this would open another menu...?");
+		}
+	},
+	{
+		label: "Exit",
+		callback: function () {
+			// do something
+			game.exit();
+		}
 	}
 ]);
