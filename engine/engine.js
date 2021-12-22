@@ -7,6 +7,8 @@ let rAFStop = window.mozCancelRequestAnimationFrame ||
 	window.webkitCancelRequestAnimationFrame ||
 	window.cancelRequestAnimationFrame;
 
+// Plugins
+const required_plugins = ["objects"];
 const default_plugins = [
 	"mouse",
 	"keyboard",
@@ -14,7 +16,9 @@ const default_plugins = [
 	"ui",
 	"storage"
 ];
+let active_plugins = [];
 
+// Override default colors
 let color_palette = {
 	"pink":"#F28DB2",
 	"red":"#F21D2F",
@@ -39,10 +43,7 @@ let color_palette = {
 	"black":"#121212"
 };
 
-// Plugin list
-let active_plugins = [];
-
-// Default layers
+// Init Layers
 let layers = [
 	{
 		name: "background",
@@ -53,7 +54,6 @@ let layers = [
 		index: 2
 	}
 ];
-
 
 $(function () {
 	console.timeEnd(readyMessage);
@@ -75,13 +75,17 @@ class Game {
 			console.error("[Game.constructor()]:", "Scenes have not been given as an Array", scenes);
 			return;
 		}
-		if(!plugins.includes("objects")) {
-			plugins.unshift("objects");
-		}
+		let timeout = 1000;
 		this.view = $(".viewport");
 		this.scene = $(".scene-container");
 		$("p").text("Loading plugins...");
 		$(".progress .determinate").css("width", "50%");
+		// Required plugins
+		required_plugins.forEach(function(plugin) {
+			if(plugins.includes(plugin)) {
+				plugins.unshift(plugin);
+			}
+		});
 		// Load plugins
 		if (!plugins) {
 			this.plugins = default_plugins;
@@ -89,7 +93,6 @@ class Game {
 			this.plugins = plugins;
 			active_plugins = this.plugins;
 		}
-		let timeout = 1000;
 		this.plugins.forEach(function (plugin) {
 			setTimeout(function () {
 				$("head").append("<script type='text/javascript' id='" + plugin + "' src='engine/plugins/" + plugin + ".plugin.js'></script>\n");
@@ -105,6 +108,12 @@ class Game {
 			that.sceneIndex = 0;
 			that.load();
 		}, (timeout + 1000));
+	}
+
+	exit() {
+		window.stop();
+		window.close();
+		delete this;
 	}
 	
 	fullscreen(bool) {
