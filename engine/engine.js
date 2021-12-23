@@ -82,7 +82,7 @@ class Game {
 		$(".progress .determinate").css("width", "50%");
 		// Required plugins
 		required_plugins.forEach(function(plugin) {
-			if(plugins.includes(plugin)) {
+			if(!plugins.includes(plugin)) {
 				plugins.unshift(plugin);
 			}
 		});

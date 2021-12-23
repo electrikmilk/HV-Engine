@@ -1,3 +1,8 @@
+/*
+ * Game Objects
+ * This plugin is required and loaded by default.
+ */
+
 class Objects {
 	constructor(options) {
 		if(!options) {
