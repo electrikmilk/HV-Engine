@@ -1,6 +1,5 @@
 let requestFullscreen;
 let rAF = window.mozRequestAnimationFrame ||
-	window.webkitRequestAnimationFrame ||
 	window.requestAnimationFrame;
 
 let rAFStop = window.mozCancelRequestAnimationFrame ||
@@ -236,7 +235,7 @@ class Scene {
 
 	// Called once every frame
 	loop() {
-		rAF(this.loop);
+		// rAF(this.loop);
 	}
 }
 
