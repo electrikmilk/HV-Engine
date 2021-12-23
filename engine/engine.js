@@ -110,8 +110,8 @@ class Game {
 		progress.css("width", "100%");
 		console.info("[Game.constructor()]:", "Project initialized. Loading first scene...", [scenes, plugins]);
 		let that = this;
+		$("body").html("<div class='container'><div class='viewport'></div></div>");
 		setTimeout(function () {
-			$("body").html("<div class='container'><div class='viewport'><div class='scene-container'></div></div></div>");
 			// Start scenes
 			that.scenes = scenes;
 			that.sceneIndex = 0;
@@ -211,7 +211,12 @@ class Game {
 
 class Scene {
 	constructor() {
-		this.container = $(".viewport .scene-container");
+		this.container = $(".viewport");
+		// $(".viewport").html("");
+		// this.layer = new Layer("canvas",1);
+		// this.layer.content("<canvas></canvas>");
+		// this.canvas = document.querySelector("canvas");
+		// this.ctx = this.canvas.getContext("2d");
 	}
 
 	start(transition) {
@@ -244,7 +249,7 @@ class Layer {
 		if(align) {
 			align = "align-"+align;
 		}
-		$(".scene-container").append("<div class='layer " + align + "' id='" + this.id + "' style='z-index:" + (1 + layers[name]) + "'><div></div></div>");
+		$(".viewport").append("<div class='layer " + align + "' id='" + this.id + "' style='z-index:" + (1 + layers[name]) + "'><div></div></div>");
 		this.element = $(".layer#" + this.id + " > div");
 	}
 
