@@ -211,6 +211,7 @@ class Game {
 class Scene {
 	constructor() {
 		this.container = $(".viewport");
+		this.container.html("");
 		this.layer = new Layer("canvas",1);
 		this.layer.content("<canvas></canvas>");
 		this.canvas = document.querySelector("canvas");

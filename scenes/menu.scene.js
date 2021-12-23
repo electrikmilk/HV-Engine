@@ -1,19 +1,18 @@
 let menu_scene = new Scene();
 
 $(function() {
-	menu_scene.start();
 	// let music = new Audio({
 	// 	src: "example/music.wav",
 	// 	channel: "music",
 	// 	autoplay: true,
 	// 	loop: true
 	// });
+	menu_scene.start();
 	let menu = new Menu([
 		{
 			label: "Start Game",
 			callback: function () {
-				// do something
-				console.log("this would start the game");
+				Game.load("chapter1/act1");
 			}
 		},
 		{
