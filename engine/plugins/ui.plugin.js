@@ -36,11 +36,16 @@ class Button {
 
 class Menu {
 	constructor(options) {
+		let menus = $(".menu-container");
 		if (options) {
+			// hide other menus
+			if(menus.length !== 0) {
+				menus.hide();
+			}
 			let id = make_id();
 			this.id = id;
 			this.layer = new Layer("menu", "2", "middle-center");
-			this.layer.content("<div class='menu-container' id='" + id + "'></div>");
+			this.layer.add("<div class='menu-container' id='" + id + "'></div>");
 			options.forEach(function (option) {
 				let option_id = make_id();
 				$(".menu-container#" + id).append("<div class='menu-item' id='" + option_id + "'>" + option.label + "</div>");
@@ -67,6 +72,39 @@ class Menu {
 					}
 				}
 			});
+		}
+	}
+	show(transition) {
+		let menus = $(".menu-container");
+		// hide other menus
+		if(menus.length !== 0) {
+			menus.hide();
+		}
+		let container = $(".menu-container#"+this.id);
+		switch (transition) {
+			case "fade": {
+				container.fadeIn();
+			}
+			case "slide": {
+				container.slideDown();
+			}
+			default: {
+				container.show();
+			}
+		}
+	}
+	hide(transition) {
+		let container = $(".menu-container#"+this.id);
+		switch (transition) {
+			case "fade": {
+				container.fadeOut();
+			}
+			case "slide": {
+				container.slideUp();
+			}
+			default: {
+				container.hide();
+			}
 		}
 	}
 }
