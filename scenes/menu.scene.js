@@ -5,7 +5,8 @@ $(function() {
 	let music = new Audio({
 		src: "example/music.wav",
 		channel: "music",
-		autoplay: true
+		autoplay: true,
+		loop: true
 	});
 	let menu = new Menu([
 		{
