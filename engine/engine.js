@@ -63,6 +63,13 @@ $(function () {
 	for(var layer in layers) {
 		layers.object = new Layer(layer.name, layer.index, false);
 	}
+	$.get("engine/res/init.html",function(response,status,xhr) {
+		if(status === "success") {
+			$("body").html(response);
+		} else {
+			console.error("HV-Engine/document.ready","Could not load loading DOM",status,xhr);
+		}
+	});
 });
 
 class Game {
@@ -78,8 +85,10 @@ class Game {
 		let timeout = 1000;
 		this.view = $(".viewport");
 		this.scene = $(".scene-container");
-		$("p").text("Loading plugins...");
-		$(".progress .determinate").css("width", "50%");
+		let status = $("p#status");
+		let progress = $(".progress .determinate");
+		status.text("Loading plugins...");
+		progress.css("width", "50%");
 		// Required plugins
 		required_plugins.forEach(function(plugin) {
 			if(!plugins.includes(plugin)) {
@@ -98,7 +107,7 @@ class Game {
 				$("head").append("<script type='text/javascript' id='" + plugin + "' src='engine/plugins/" + plugin + ".plugin.js'></script>\n");
 			}, (timeout + 1000));
 		});
-		$(".progress .determinate").css("width", "100%");
+		progress.css("width", "100%");
 		console.info("[Game.constructor()]:", "Project initialized. Loading first scene...", [scenes, plugins]);
 		let that = this;
 		setTimeout(function () {
