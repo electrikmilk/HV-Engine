@@ -222,7 +222,7 @@ class Scene {
 
 	// Called once every frame
 	loop() {
-		rAF(loop);
+		rAF(this.loop);
 	}
 }
 
