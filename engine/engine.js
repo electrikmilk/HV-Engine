@@ -211,11 +211,10 @@ class Game {
 class Scene {
 	constructor() {
 		this.container = $(".viewport");
-		// $(".viewport").html("");
-		// this.layer = new Layer("canvas",1);
-		// this.layer.content("<canvas></canvas>");
-		// this.canvas = document.querySelector("canvas");
-		// this.ctx = this.canvas.getContext("2d");
+		this.layer = new Layer("canvas",1);
+		this.layer.content("<canvas></canvas>");
+		this.canvas = document.querySelector("canvas");
+		this.ctx = this.canvas.getContext("2d");
 	}
 
 	start(transition) {
