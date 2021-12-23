@@ -19,27 +19,27 @@ let active_plugins = [];
 
 // Override default colors
 let color_palette = {
-	"pink":"#F28DB2",
-	"red":"#F21D2F",
-	"orange":"#F28907",
-	"darkorange":"#A65E1F",
-	"yellow":"#F2B807",
-	"green":"#00CC00",
-	"olive":"#8FA65D",
-	"darkolive":"#384001",
-	"seagreen":"#0BE0A8",
-	"cyan":"#0CE6EA",
-	"blue":"#527AF2",
-	"darkblue":"#2D3CAD",
-	"indigo":"#5F49F2",
-	"purple":"#A85FD9",
-	"darkpurple":"#582F68",
-	"brown":"#A65E1F",
-	"darkbrown":"#592202",
-	"lightgrey":"#888888",
-	"grey":"#555555",
-	"darkgrey":"#333333",
-	"black":"#121212"
+	"pink": "#f28db2",
+	"red": "#f21d2f",
+	"orange": "#f28907",
+	"darkorange": "#a65e1f",
+	"yellow": "#f2b807",
+	"green": "#00cc00",
+	"olive": "#8fa65d",
+	"darkolive": "#384001",
+	"seagreen": "#0be0a8",
+	"cyan": "#0ce6ea",
+	"blue": "#527af2",
+	"darkblue": "#2d3cad",
+	"indigo": "#5f49f2",
+	"purple": "#a85fd9",
+	"darkpurple": "#582f68",
+	"brown": "#a65e1f",
+	"darkbrown": "#592202",
+	"lightgrey": "#888888",
+	"grey": "#555555",
+	"darkgrey": "#333333",
+	"black": "#121212"
 };
 
 // Init Layers
@@ -59,14 +59,14 @@ $(function () {
 	// Progress bar
 	$(".progress .determinate").css("width", "25%");
 	// Add default layers
-	for(var layer in layers) {
+	for (var layer in layers) {
 		layers.object = new Layer(layer.name, layer.index, false);
 	}
-	$.get("engine/res/init.html",function(response,status,xhr) {
-		if(status === "success") {
+	$.get("engine/res/init.html", function (response, status, xhr) {
+		if (status === "success") {
 			$("body").html(response);
 		} else {
-			console.error("HV-Engine/document.ready","Could not load loading DOM",status,xhr);
+			console.error("HV-Engine/document.ready", "Could not load loading DOM", status, xhr);
 		}
 	});
 });
@@ -89,8 +89,8 @@ class Game {
 		status.text("Loading plugins...");
 		progress.css("width", "50%");
 		// Required plugins
-		required_plugins.forEach(function(plugin) {
-			if(!plugins.includes(plugin)) {
+		required_plugins.forEach(function (plugin) {
+			if (!plugins.includes(plugin)) {
 				plugins.unshift(plugin);
 			}
 		});
@@ -123,10 +123,10 @@ class Game {
 		$("body").html("");
 		delete this;
 	}
-	
+
 	fullscreen(bool) {
 		if (bool === true) {
-			requestFullscreen = setInterval(function() {
+			requestFullscreen = setInterval(function () {
 				if ((window.fullScreen) || (window.innerWidth == screen.width && window.innerHeight == screen.height)) {
 					clearInterval(requestFullscreen);
 				} else {
@@ -157,6 +157,10 @@ class Game {
 	viewport(width, height) {
 		if (width) this.view.css("width", width);
 		if (height) this.view.css("height", height);
+		if(this.view.find("canvas").length !== 0) {
+			if (width) this.view.find("canvas").css("width", width);
+			if (height) this.view.find("canvas").css("height", height);
+		}
 	}
 
 	async shake(deg = 5, between = 100) {
@@ -212,10 +216,12 @@ class Scene {
 	constructor() {
 		this.container = $(".viewport");
 		this.container.html("");
-		this.layer = new Layer("canvas",1);
-		this.layer.content("<canvas></canvas>");
-		this.canvas = document.querySelector("canvas");
-		this.ctx = this.canvas.getContext("2d");
+		let width = this.container.css("width");
+		let height = this.container.css("height");
+		this.layer = new Layer("canvas", 1);
+		this.layer.content("<canvas width='"+width+"' height='"+height+"'></canvas>");
+		this.element = document.querySelector("canvas");
+		this.canvas = this.element.getContext("2d");
 	}
 
 	start(transition) {
@@ -241,32 +247,32 @@ class Scene {
 
 class Layer {
 	constructor(name, index, align = "middle-center") {
-		if($("div.layer[name='"+name+"']").length === 0) {
+		if ($("div.layer[name='" + name + "']").length === 0) {
 			this.id = make_id();
 			this.name = name;
 			if (!layers[name]) {
 				layers[name] = parseInt(index);
 			}
-			if(align) {
-				align = "align-"+align;
+			if (align) {
+				align = "align-" + align;
 			}
-			$(".viewport").append("<div class='layer " + align + "' name='"+name+"' id='" + this.id + "' style='z-index:" + (1 + layers[name]) + "'><div></div></div>");
+			$(".viewport").append("<div class='layer " + align + "' name='" + name + "' id='" + this.id + "' style='z-index:" + (1 + layers[name]) + "'><div></div></div>");
 		} else {
-			this.id = $("div.layer[name='"+name+"']").attr("id");
+			this.id = $("div.layer[name='" + name + "']").attr("id");
 		}
 		this.element = $(".layer#" + this.id + " > div");
 	}
 
 	align(direction) {
-		this.element.parent().attr("class","layer align-"+direction);
+		this.element.parent().attr("class", "layer align-" + direction);
 	}
 
 	content(html) {
 		this.element.html(html);
 	}
 
-	add(html,prepend = false) {
-		if(prepend === false) {
+	add(html, prepend = false) {
+		if (prepend === false) {
 			this.element.append(html);
 		} else {
 			this.element.prepend(html);

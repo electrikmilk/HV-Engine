@@ -1,4 +1,16 @@
-let menu_scene = new Scene();
+
+class MenuScene extends Scene {
+	constructor() {
+		super();
+	}
+	start() {
+		this.canvas.beginPath();
+		this.canvas.rect(20, 40, 50, 50);
+		this.canvas.fillStyle = "#FF0000";
+		this.canvas.fill();
+		this.canvas.closePath();
+	}
+}
 
 $(function() {
 	// let music = new Audio({
@@ -7,6 +19,7 @@ $(function() {
 	// 	autoplay: true,
 	// 	loop: true
 	// });
+	let menu_scene = new MenuScene();
 	menu_scene.start();
 	let menu = new Menu([
 		{
