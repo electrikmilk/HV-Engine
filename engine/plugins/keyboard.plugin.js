@@ -77,4 +77,4 @@ let Keyboard = {
 	reset() {
 		Mousetrap.reset();
 	}
-}
+};

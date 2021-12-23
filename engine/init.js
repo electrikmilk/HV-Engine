@@ -11,23 +11,23 @@ let resources = {
 	"project": ["project"]
 };
 
-window.onload = function() {
+window.onload = function () {
 	console.timeEnd("window");
 	// Load main stylesheets
-	css.forEach(function(file) {
+	css.forEach(function (file) {
 		let style = document.createElement("link");
 		style.rel = "stylesheet";
-		style.href = "engine/styles/"+file+".css";
+		style.href = "engine/styles/" + file + ".css";
 		head.appendChild(style);
 	});
 	// Insert play button (get user interaction)
-	document.querySelector("body").innerHTML = '<div class="layer align-middle-center" style="user-select:none"><img src="engine/res/icons/play.svg" width="64" height="64"/></div>';
-	document.querySelector("img").onclick = function() {
+	document.querySelector("body").innerHTML = "<div class=\"layer align-middle-center\" style=\"user-select:none\"><img src=\"engine/res/icons/play.svg\" width=\"64\" height=\"64\"/></div>";
+	document.querySelector("img").onclick = function () {
 		// Start timer
 		console.log("got user interaction, loading resources...");
 		console.time(readyMessage);
 		// Hide play button
-		this.style.display = 'none';
+		this.style.display = "none";
 		// Load resources
 		for (var group in resources) {
 			resources[group].forEach(function (resource) {

@@ -157,7 +157,7 @@ class Game {
 	viewport(width, height) {
 		if (width) this.view.css("width", width);
 		if (height) this.view.css("height", height);
-		if(this.view.find("canvas").length !== 0) {
+		if (this.view.find("canvas").length !== 0) {
 			if (width) this.view.find("canvas").css("width", width);
 			if (height) this.view.find("canvas").css("height", height);
 		}
@@ -219,7 +219,7 @@ class Scene {
 		let width = this.container.css("width");
 		let height = this.container.css("height");
 		this.layer = new Layer("canvas", 1);
-		this.layer.content("<canvas width='"+width+"' height='"+height+"'></canvas>");
+		this.layer.content("<canvas width='" + width + "' height='" + height + "'></canvas>");
 		this.element = document.querySelector("canvas");
 		this.canvas = this.element.getContext("2d");
 	}

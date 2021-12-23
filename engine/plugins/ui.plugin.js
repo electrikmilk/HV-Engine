@@ -7,8 +7,8 @@
 
 let tick;
 
-$(function() {
-	if(active_plugins.includes("audio")) {
+$(function () {
+	if (active_plugins.includes("audio")) {
 		tick = new Audio({
 			src: "engine/res/sfx/tick.wav",
 			channel: "sfx"
@@ -39,7 +39,7 @@ class Menu {
 		let menus = $(".menu-container");
 		if (options) {
 			// hide other menus
-			if(menus.length !== 0) {
+			if (menus.length !== 0) {
 				menus.hide();
 			}
 			let id = make_id();
@@ -54,18 +54,18 @@ class Menu {
 						option.callback();
 					}
 				});
-				if(active_plugins.includes("gamepad")) {
-					$(".menu-container#"+id+" .menu-item:first-child").focus();
+				if (active_plugins.includes("gamepad")) {
+					$(".menu-container#" + id + " .menu-item:first-child").focus();
 					let gp = new Gamepad(1);
-					gp.on(["left-stick"],"up",function() {
-						$(".menu-container#"+id+" .menu-item:focus").prev().focus();
+					gp.on(["left-stick"], "up", function () {
+						$(".menu-container#" + id + " .menu-item:focus").prev().focus();
 					});
-					gp.on(["left-stick"],"down",function() {
-						$(".menu-container#"+id+" .menu-item:focus").next().focus();
+					gp.on(["left-stick"], "down", function () {
+						$(".menu-container#" + id + " .menu-item:focus").next().focus();
 					});
 				}
-				if(active_plugins.includes("audio")) { // make sure we can make a sound
-					if(active_plugins.includes("mouse")) { // should we ignore the mouse?
+				if (active_plugins.includes("audio")) { // make sure we can make a sound
+					if (active_plugins.includes("mouse")) { // should we ignore the mouse?
 						$(".menu-container#" + id + " > .menu-item").on("mouseenter", function () {
 							tick.play();
 						});
@@ -74,13 +74,14 @@ class Menu {
 			});
 		}
 	}
+
 	show(transition) {
 		let menus = $(".menu-container");
 		// hide other menus
-		if(menus.length !== 0) {
+		if (menus.length !== 0) {
 			menus.hide();
 		}
-		let container = $(".menu-container#"+this.id);
+		let container = $(".menu-container#" + this.id);
 		switch (transition) {
 			case "fade": {
 				container.fadeIn();
@@ -93,8 +94,9 @@ class Menu {
 			}
 		}
 	}
+
 	hide(transition) {
-		let container = $(".menu-container#"+this.id);
+		let container = $(".menu-container#" + this.id);
 		switch (transition) {
 			case "fade": {
 				container.fadeOut();

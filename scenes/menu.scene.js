@@ -1,18 +1,18 @@
-
 class MenuScene extends Scene {
 	constructor() {
 		super();
 	}
+
 	start() {
 		this.canvas.beginPath();
 		this.canvas.rect(20, 40, 50, 50);
-		this.canvas.fillStyle = "#FF0000";
+		this.canvas.fillStyle = "#ff0000";
 		this.canvas.fill();
 		this.canvas.closePath();
 	}
 }
 
-$(function() {
+$(function () {
 	// let music = new Audio({
 	// 	src: "example/music.wav",
 	// 	channel: "music",
@@ -45,13 +45,13 @@ $(function() {
 	let options = new Menu([
 		{
 			label: "Sound",
-			callback: function() {
+			callback: function () {
 
 			}
 		},
 		{
 			label: "Back",
-			callback: function() {
+			callback: function () {
 				menu.show();
 			}
 		}

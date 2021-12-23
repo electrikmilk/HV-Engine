@@ -43,17 +43,17 @@ class Audio {
 				}
 			}
 			if (data.autoplay && data.autoplay === true) {
-				audio.setAttribute("autoplay",true);
+				audio.setAttribute("autoplay", true);
 			}
 			if (data.loop && data.loop === true) {
-				audio.setAttribute("loop",true);
+				audio.setAttribute("loop", true);
 			}
 		} else {
 			this.src = data;
 		}
-		audio.setAttribute("id",this.id);
-		audio.setAttribute("channel",this.channel);
-		audio.setAttribute("src",this.src);
+		audio.setAttribute("id", this.id);
+		audio.setAttribute("channel", this.channel);
+		audio.setAttribute("src", this.src);
 		container.appendChild(audio);
 		this.element = $("audio#" + this.id);
 	}
