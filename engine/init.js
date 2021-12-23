@@ -1,13 +1,23 @@
 const version = "1.0.0";
 let readyMessage = "HV-Engine (" + version + ") ready";
+const head = document.querySelector("head");
+let timeout = 1000;
 
-console.time(readyMessage);
-
+let css = ["main", "ui"];
 let resources = {
-	"styles": ["main", "ui"],
 	"frameworks": ["jquery", "jquery-ui", "mousetrap", "mousetrap-pause"],
 	"general": ["engine"],
 	"project": ["project"]
+};
+
+window.onload = function() {
+	console.log("window loaded");
+	css.forEach(function(file) {
+		let style = document.createElement("link");
+		style.rel = "stylesheet";
+		style.href = "engine/styles/"+file+".css";
+		head.appendChild(style);
+	});
 };
 
 async function sleep(s) {
@@ -28,34 +38,37 @@ function make_id(length = 6) {
 
 /* Load resources */
 
-const head = document.querySelector("head");
-let timeout = 1000;
-for (var group in resources) {
-	resources[group].forEach(function (resource) {
-		let element;
-		if (group === "styles") {
-			element = document.createElement("link");
-			element.rel = "stylesheet";
-			timeout = 0;
-		} else {
-			element = document.createElement("script");
-			element.type = "text/javascript";
-			element.async = true;
-			timeout = timeout + 500;
-		}
-		if (group === "frameworks") {
-			element.src = "engine/" + group + "/" + resource + ".min.js";
-		} else if (group === "plugins") {
-			element.src = "engine/" + group + "/" + resource + ".plugin.js";
-		} else if (group === "styles") {
-			element.href = "engine/" + group + "/" + resource + ".css";
-		} else if (group === "project") {
-			element.src = "project.js";
-		} else {
-			element.src = "engine/" + resource + ".js";
-		}
-		setTimeout(function () {
-			head.appendChild(element);
-		}, timeout);
-	});
-}
+document.querySelector("img").onclick = function() {
+	console.time(readyMessage);
+	this.style.display = 'none';
+	document.querySelector("#loading").style.display = 'block';
+	for (var group in resources) {
+		resources[group].forEach(function (resource) {
+			let element;
+			if (group === "styles") {
+				element = document.createElement("link");
+				element.rel = "stylesheet";
+				timeout = 0;
+			} else {
+				element = document.createElement("script");
+				element.type = "text/javascript";
+				element.async = true;
+				timeout = timeout + 500;
+			}
+			if (group === "frameworks") {
+				element.src = "engine/" + group + "/" + resource + ".min.js";
+			} else if (group === "plugins") {
+				element.src = "engine/" + group + "/" + resource + ".plugin.js";
+			} else if (group === "styles") {
+				element.href = "engine/" + group + "/" + resource + ".css";
+			} else if (group === "project") {
+				element.src = "project.js";
+			} else {
+				element.src = "engine/" + resource + ".js";
+			}
+			setTimeout(function () {
+				head.appendChild(element);
+			}, timeout);
+		});
+	}
+};
