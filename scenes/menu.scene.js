@@ -8,6 +8,8 @@ class MenuScene extends Scene {
 		this.canvas.rect(20, 40, 50, 50);
 		this.canvas.fillStyle = "#ff0000";
 		this.canvas.fill();
+		this.canvas.strokeStyle = "rgba(0, 0, 255, 0.5)";
+		this.canvas.stroke();
 		this.canvas.closePath();
 	}
 }
@@ -25,7 +27,7 @@ $(function () {
 		{
 			label: "Start Game",
 			callback: function () {
-				Game.load("chapter1/act1");
+				game.load("chapter1/act1");
 			}
 		},
 		{
