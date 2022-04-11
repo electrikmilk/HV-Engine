@@ -1,9 +1,18 @@
 /*
- * Game Objects
+ * Objects
+ *
+ * Objects are drawn in the foreground scene layer and have no collision detection.
+ *
+ * These are objects not drawn to the scene's canvas layer. They are essentially just html elements drawn into the foreground layer.
+ * Create an Object to draw something in the foreground layer.
+ * This distinction is made as a convenience.
+ * Make sure you add these objects to a layer that is on top of the canvas layer.
+ * These objects have no collision detection.
  * This plugin is required and loaded by default.
+ *
  */
 
-class Objects {
+class Object {
 	constructor(options) {
 		if (!options) {
 			return;
@@ -19,48 +28,48 @@ class Objects {
 	set(key, value) {
 		switch (key) {
 			case "background":
-				if (value.includes("/")) {
+			case "background-image":
+			case "background-color":
+				if (value.includes("/") || key === "background-image") {
 					// url
 					this.object().css("background-image", "url(" + value + ")");
-				} else {
+				} else if(key === "background-color") {
 					// color
-					if (!value.includes("#") && color_palette[value]) {
-						value = color_palette[value];
+					if (!value.includes("#") && colors[value]) {
+						value = colors[value];
 					}
 					this.object().css("background-color", value);
 				}
 				break;
 			case "stroke":
-				if (value.color) {
+			case "stroke-color":
+			case "stroke-width":
+				if (value.color || key === "stroke-color") {
 					let color = value.color;
 					if (!color.includes("#") && color_palette[color]) {
 						color = color_palette[color];
 					}
 					this.object().css("border-color", color);
 				}
-				if (value.width) {
+				if (value.width || key === "stroke-width") {
 					this.object().css("border-color", value.width.replace("px", "") + "px");
 				}
 				break;
 			case "rounding":
 				this.object().css("border-radius", value.replace("px", "") + "px");
 				break;
-			case "padding": {
+			case "padding":
 				this.object().css("padding", value.replace("px", "") + "px");
 				break;
-			}
-			case "margin": {
+			case "margin":
 				this.object().css("margin", value.replace("px", "") + "px");
 				break;
-			}
-			case "width": {
+			case "width":
 				this.object().css("width", value.replace("px", "") + "px");
 				break;
-			}
-			case "height": {
+			case "height":
 				this.object().css("height", value.replace("px", "") + "px");
 				break;
-			}
 			default:
 				break;
 		}
@@ -73,19 +82,18 @@ class Objects {
 	}
 
 	effect(type) {
-		switch (type) {
-			case "":
-
-				break;
-		}
+		// switch (type) {
+		// 	case "":
+		//
+		// 		break;
+		// }
 	}
 }
 
-class Sprite extends Objects {
+class Sprite extends Object {
 	constructor(options) {
 		super(options);
 	}
-
 	move(direction, amount) {
 		let bound = super.object().getBoundingClientRect();
 		if (super.object().withinParent()) {
@@ -116,7 +124,7 @@ class Sprite extends Objects {
 	}
 }
 
-class Text extends Objects {
+class Text extends Object {
 	constructor(options) {
 		super(options);
 		super.set("padding", "5px");
