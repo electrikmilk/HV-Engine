@@ -7,13 +7,14 @@ let rAFStop = window.mozCancelRequestAnimationFrame ||
 	window.cancelRequestAnimationFrame;
 
 // Plugins
-const required_plugins = ["objects","sprites"];
+const required_plugins = ["objects", "sprites"];
 const default_plugins = [
 	"mouse",
 	"keyboard",
 	"audio",
 	"ui",
-	"storage"
+	"storage",
+	"dialogue"
 ];
 let active_plugins = [];
 
@@ -237,7 +238,7 @@ class Scene {
 				if (value.includes("/") || key === "background-image") {
 					// url
 					this.canvas.css("background-image", "url(" + value + ")");
-				} else if(key === "background-color") {
+				} else if (key === "background-color") {
 					// color
 					if (!value.includes("#") && colors[value]) {
 						value = colors[value];

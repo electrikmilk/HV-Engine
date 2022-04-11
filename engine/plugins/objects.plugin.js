@@ -14,9 +14,9 @@
 
 class Object {
 	constructor(options) {
-		if (!options) {
-			return;
-		}
+		// if (!options) {
+		// 	return;
+		// }
 		this.id = make_id();
 		layers[1].object.add("<div class='object' id='" + this.id + "'></div>");
 	}
@@ -33,7 +33,7 @@ class Object {
 				if (value.includes("/") || key === "background-image") {
 					// url
 					this.object().css("background-image", "url(" + value + ")");
-				} else if(key === "background-color") {
+				} else if (key === "background-color") {
 					// color
 					if (!value.includes("#") && colors[value]) {
 						value = colors[value];
@@ -46,8 +46,8 @@ class Object {
 			case "stroke-width":
 				if (value.color || key === "stroke-color") {
 					let color = value.color;
-					if (!color.includes("#") && color_palette[color]) {
-						color = color_palette[color];
+					if (!color.includes("#") && colors[color]) {
+						color = colors[color];
 					}
 					this.object().css("border-color", color);
 				}
@@ -70,6 +70,12 @@ class Object {
 			case "height":
 				this.object().css("height", value.replace("px", "") + "px");
 				break;
+			case "text":
+				let color = value.color;
+				if (!color.includes("#") && colors[color]) {
+					color = colors[color];
+				}
+				this.object().css("color", color);
 			default:
 				break;
 		}
@@ -94,6 +100,7 @@ class Sprite extends Object {
 	constructor(options) {
 		super(options);
 	}
+
 	move(direction, amount) {
 		let bound = super.object().getBoundingClientRect();
 		if (super.object().withinParent()) {

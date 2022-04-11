@@ -86,3 +86,27 @@ class Sprite {
 		}
 	}
 }
+
+class Character {
+	constructor(info) {
+		if (!info) {
+			delete this;
+			return;
+		}
+		this.info = info;
+	}
+
+	set(key, value) {
+		switch (key) {
+			case "name":
+				this.info.name = value;
+		}
+	}
+
+	get(key) {
+		let keyValue = Object.keys(this.info).find(key);
+		if (keyValue) {
+			return keyValue;
+		}
+	}
+}
