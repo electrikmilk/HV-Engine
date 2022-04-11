@@ -7,7 +7,7 @@ let rAFStop = window.mozCancelRequestAnimationFrame ||
 	window.cancelRequestAnimationFrame;
 
 // Plugins
-const required_plugins = ["objects"];
+const required_plugins = ["objects","sprites"];
 const default_plugins = [
 	"mouse",
 	"keyboard",
@@ -17,8 +17,8 @@ const default_plugins = [
 ];
 let active_plugins = [];
 
-// Override default colors
-let color_palette = {
+// Override default css colors, make the contrast less harsh
+let colors = {
 	"pink": "#f28db2",
 	"red": "#f21d2f",
 	"orange": "#f28907",
@@ -43,30 +43,30 @@ let color_palette = {
 };
 
 // Init Layers
-let layers = [
-	{
-		name: "background",
-		index: 1
-	},
-	{
-		name: "foreground",
-		index: 2
-	}
-];
+// let layers = [
+// 	{
+// 		name: "background",
+// 		index: 1
+// 	},
+// 	{
+// 		name: "foreground",
+// 		index: 2
+// 	}
+// ];
 
 $(function () {
 	console.timeEnd(readyMessage);
 	// Progress bar
 	$(".progress .determinate").css("width", "25%");
 	// Add default layers
-	for (var layer in layers) {
-		layers.object = new Layer(layer.name, layer.index, false);
-	}
+	// for (var layer in layers) {
+	// 	layers.object = new Layer(layer.name, layer.index, false);
+	// }
 	$.get("engine/res/init.html", function (response, status, xhr) {
 		if (status === "success") {
 			$("body").html(response);
 		} else {
-			console.error("HV-Engine/document.ready", "Could not load loading DOM", status, xhr);
+			console.error("HV-Engine/document.ready", "Could not load loading screen", status, xhr);
 		}
 	});
 });
@@ -220,8 +220,38 @@ class Scene {
 		let height = this.container.css("height");
 		this.layer = new Layer("canvas", 1);
 		this.layer.content("<canvas width='" + width + "' height='" + height + "'></canvas>");
-		this.element = document.querySelector("canvas");
-		this.canvas = this.element.getContext("2d");
+		this.canvas = this.object().find("canvas");
+		this.context = this.canvas.getContext("2d");
+	}
+
+	object() {
+		// return $("div.object#" + this.id);
+		return this.layer.element;
+	}
+
+	set(key, value) {
+		switch (key) {
+			case "background":
+			case "background-image":
+			case "background-color":
+				if (value.includes("/") || key === "background-image") {
+					// url
+					this.canvas.css("background-image", "url(" + value + ")");
+				} else if(key === "background-color") {
+					// color
+					if (!value.includes("#") && colors[value]) {
+						value = colors[value];
+					}
+					this.canvas.css("background-color", value);
+				}
+				break;
+		}
+	}
+
+	get(key) {
+		if (this.object().css(key)) {
+			return this.object().css(key);
+		}
 	}
 
 	start(transition) {
