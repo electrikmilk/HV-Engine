@@ -29,7 +29,7 @@ window.onload = function () {
 		// Hide play button
 		this.style.display = "none";
 		// Load resources
-		for (var group in resources) {
+		for (let group in resources) {
 			resources[group].forEach(function (resource) {
 				let element;
 				if (group === "styles") {
