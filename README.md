@@ -14,11 +14,11 @@ This project is in its early stages. I have yet to fully test all of its functio
 
 Starting to work on this engine again.
 
-My plan is to redo most of the code, as when I started, I thought this could all be done using HTML elements but later realized the actual game would need to be drawn to a canvas.
+My plan is to redo most of the code, as when I started, I thought this could all be done using HTML elements, but later realized the actual game would need to be drawn to a canvas.
 
 Also, some stuff during the engine's initialization doesn't make any sense.
 
-I'm hoping to have this engine actually working soon, with fixed example project that has a start menu, transitions to a basic scene with a background and a sprite that can walk around on that background.
+I'm hoping to have this engine actually working soon, with a fixed example project that has a start menu, transitions to a basic scene with a background and a sprite that can walk around on that background.
 
 ### Structure
 
@@ -33,10 +33,20 @@ I'm hoping to have this engine actually working soon, with fixed example project
 
 Plugins are capabilities given to the scenes.
 
-- Keyboard*
-- Gamepad*
+- Mouse^^
+- Keyboard^^
+- Gamepad (controllers)
+- Audio^
+- UI^
+- Storage^
+- Dialogue^
+- Custom Fonts
+- Objects^^
+- Sprites^^
+- Touch
 
-[*] Loaded by default if no plugins are specified
+[^] Loaded by default if no plugins are specified
+[^^] Required
 
 ### Project Setup
 
