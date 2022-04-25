@@ -1,13 +1,13 @@
 const version = "1.0.0";
-let readyMessage = "HV-Engine (" + version + ") ready";
 const head = document.querySelector("head");
 let timeout = 1000;
+let readyMessage = "HV2D (" + version + ") - ready";
 console.time("window");
 
 let css = ["main", "ui"];
 let resources = {
 	"frameworks": ["jquery", "jquery-ui", "mousetrap", "mousetrap-pause"],
-	"general": ["engine"],
+	"general": ["index"],
 	"project": ["project"]
 };
 
@@ -17,14 +17,14 @@ window.onload = function () {
 	css.forEach(function (file) {
 		let style = document.createElement("link");
 		style.rel = "stylesheet";
-		style.href = "engine/styles/" + file + ".css";
+		style.href = "engine/" + file + ".css";
 		head.appendChild(style);
 	});
 	// Insert play button (get user interaction)
-	document.querySelector("body").innerHTML = "<div class=\"layer align-middle-center\" style=\"user-select:none\"><img src=\"engine/res/icons/play.svg\" width=\"64\" height=\"64\"/></div>";
+	document.querySelector("body").innerHTML = "<div class=\"init\" style=\"user-select:none\"><img src=\"engine/res/icons/play.svg\" width=\"64\" height=\"64\"/></div>";
 	document.querySelector("img").onclick = function () {
 		// Start timer
-		console.log("got user interaction, loading resources...");
+		console.log("got initial user interaction, loading resources...");
 		console.time(readyMessage);
 		// Hide play button
 		this.style.display = "none";

@@ -5,11 +5,11 @@
 * Makes it easier to manage audio and sound effects.
 * */
 
+let channels = ["music", "sfx", "voices"]; // default channels
+
 $(function () {
 	$("body").prepend("<div class='audio-container'></div>");
 });
-
-let channels = ["music", "sfx", "voices"]; // default channels
 
 // Change volume for all audio in the channel
 function channel(channel, percent) {
@@ -72,10 +72,6 @@ class Audio {
 
 	pause() {
 		this.element.get(0).pause();
-	}
-
-	stop() {
-		this.element.get(0).stop();
 	}
 
 	volume(percent) {

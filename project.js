@@ -1,22 +1,15 @@
-/* Example game script */
+/* Example project config */
 
-let scenes = [
-	"menu",
-	"chapter1/act1",
-	"chapter1/act2",
-	"chapter1/act3"
-];
-
-let plugins = [
-	"keyboard",
-	"gamepad",
-	"mouse",
-	"storage",
-	"audio",
-	"ui"
-];
-
-let game = new Game(scenes, plugins);
-
-game.viewport("640px", "480px");
-
+let game = new Game({
+	scenes: [
+		"scene1"
+	],
+	plugins: [
+		"keyboard",
+		"mouse",
+		"audio",
+		"dialogue",
+		"ui"
+	],
+	font: "Press Start 2P"
+});

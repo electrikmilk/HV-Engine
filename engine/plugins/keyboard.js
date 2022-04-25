@@ -17,13 +17,13 @@ let Keyboard = {
 			return;
 		}
 		switch (state) {
-			case "press":
+			case "pressed":
 				state = "keypress";
 				break;
-			case "hold":
+			case "down":
 				state = "keydown";
 				break;
-			case "release":
+			case "up":
 				state = "keyup";
 				break;
 			default:
