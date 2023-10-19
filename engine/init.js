@@ -1,78 +1,97 @@
-const version = "1.0.0";
-const head = document.querySelector("head");
-let timeout = 1000;
-let readyMessage = "HV2D (" + version + ") - ready";
-console.time("window");
+import {Element} from './helpers.js';
+import {canvasDraw, toggleFullscreen} from './screen.js';
+import {drawMouse} from './mouse.js';
 
-let css = ["main", "ui"];
-let resources = {
-	"frameworks": ["jquery", "jquery-ui", "mousetrap", "mousetrap-pause"],
-	"general": ["index"],
-	"project": ["project"]
+export let frame;
+export let ctx;
+export let canvas;
+
+let defaultOptions = {
+    width: 640,
+    height: 480,
+    backgroundColor: 'darkgrey',
+    backgroundImage: null,
+    font: 'Helvetica',
+    fullscreen: false,
 };
 
-window.onload = function () {
-	console.timeEnd("window");
-	// Load main stylesheets
-	css.forEach(function (file) {
-		let style = document.createElement("link");
-		style.rel = "stylesheet";
-		style.href = "engine/" + file + ".css";
-		head.appendChild(style);
-	});
-	// Insert play button (get user interaction)
-	document.querySelector("body").innerHTML = "<div class=\"init\" style=\"user-select:none\"><img src=\"engine/res/icons/play.svg\" width=\"64\" height=\"64\"/></div>";
-	document.querySelector("img").onclick = function () {
-		// Start timer
-		console.log("got initial user interaction, loading resources...");
-		console.time(readyMessage);
-		// Hide play button
-		this.style.display = "none";
-		// Load resources
-		for (let group in resources) {
-			resources[group].forEach(function (resource) {
-				let element;
-				if (group === "styles") {
-					element = document.createElement("link");
-					element.rel = "stylesheet";
-					timeout = 0;
-				} else {
-					element = document.createElement("script");
-					element.type = "text/javascript";
-					element.async = true;
-					timeout = timeout + 500;
-				}
-				if (group === "frameworks") {
-					element.src = "engine/" + group + "/" + resource + ".min.js";
-				} else if (group === "plugins") {
-					element.src = "engine/" + group + "/" + resource + ".plugin.js";
-				} else if (group === "styles") {
-					element.href = "engine/" + group + "/" + resource + ".css";
-				} else if (group === "project") {
-					element.src = "project.js";
-				} else {
-					element.src = "engine/" + resource + ".js";
-				}
-				setTimeout(function () {
-					head.appendChild(element);
-				}, timeout);
-			});
-		}
-	};
-};
+let configs = {};
 
-async function sleep(s) {
-	s = s * 1000;
-	return new Promise(resolve => setTimeout(resolve, s));
+export function init(options, startCallback) {
+    console.time('HV2D_ready');
+    if (options) {
+        configs = options;
+    }
+    // Style the body
+    new Element('body').style('display', 'flex').style('justify-content', 'center').style('align-items', 'center').style('margin', 0).style('padding', 0).style('height', '100vh').style('background', 'black');
+
+    const startButton = new Element('img', {
+        src: './engine/play.svg',
+        width: 80,
+        height: 80,
+    });
+    startButton.onClick(() => {
+        // Create canvas and start drawing loop.
+        canvas = new Element('canvas');
+        if (!config('fillScreen')) {
+            canvas.element['width'] = config('width');
+            canvas.element['height'] = config('height');
+        } else {
+            canvas.style('width', '100vw');
+            canvas.style('height', '100vh');
+        }
+        if (config('fullscreen')) {
+            toggleFullscreen();
+        }
+        ctx = canvas.element.getContext('2d');
+        frame = window.requestAnimationFrame(canvasDraw);
+
+        drawMouse();
+
+        startButton.remove();
+
+        // Call user start callback
+        if (!startCallback) {
+            throw new Error('[HV2D] Please provide the init() function with a callback');
+        }
+        startCallback();
+    });
+    console.timeEnd('HV2D_ready');
 }
 
-function make_id(length = 6) {
-	let result = "";
-	let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-	let charactersLength = characters.length;
-	for (let i = 0; i < length; i++) {
-		result += characters.charAt(Math.floor(Math.random() *
-			charactersLength));
-	}
-	return result;
+export function config(key) {
+    if (Object.hasOwn(configs, key)) {
+        return configs[key];
+    }
+
+    if (Object.hasOwn(defaultOptions, key)) {
+        return defaultOptions[key];
+    }
+
+    return null;
+}
+
+let logMessage = ['[HV2D]'];
+
+export const Log = {
+    log: (message) => {
+        console.log(log(message, '[ERR]'));
+    },
+    info: (message) => {
+        console.info(log(message, '[INFO]'));
+    },
+    warn: (message) => {
+        console.warn(log(message, '[WARN]'));
+    },
+    err: (message) => {
+        console.error(log(message, '[ERR]'));
+    },
+};
+
+function log(message, prefix) {
+    logMessage.push(prefix, message);
+    const init = logMessage;
+    message = logMessage.join(' ');
+    logMessage = init;
+    return message;
 }
