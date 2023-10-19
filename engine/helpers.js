@@ -151,3 +151,7 @@ export const MUST = func => {
         throw new Error(e.message);
     }
 };
+
+export const empty = value => {
+    return value === undefined || typeof value === 'undefined' || value === null || (!value && value !== 0 && value !== false);
+};
