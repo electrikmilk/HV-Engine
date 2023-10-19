@@ -146,12 +146,12 @@ export const TRY = func => {
 
 export const MUST = func => {
     try {
-        return [func(), null];
+        return func();
     } catch (e) {
         throw new Error(e.message);
     }
 };
 
 export const empty = value => {
-    return value === undefined || typeof value === 'undefined' || value === null || (!value && value !== 0 && value !== false);
+    return value === undefined || typeof value === 'undefined' || value === null || (!value && value !== 0 && value !== false) || value.length === 0 || Object.is(value, {});
 };

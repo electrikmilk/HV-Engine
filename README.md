@@ -133,42 +133,42 @@ colliding(sprite1, sprite2)
 
 // Custom collision detection
 boxCollision(
-    {
-        x: 250,
-        y: 180
-    },
-    {
-        x: 250,
-        y: 180
-    }
+        {
+            x: 250,
+            y: 180
+        },
+        {
+            x: 250,
+            y: 180
+        }
 );
 
 circleCollision(
-    {
-        x: 100,
-        y: 100,
-        radius: 80
-    },
-    {
-        x: 200,
-        y: 200,
-        radius: 50
-    }
+        {
+            x: 100,
+            y: 100,
+            radius: 80
+        },
+        {
+            x: 200,
+            y: 200,
+            radius: 50
+        }
 )
 circleBoxCollision(
-    // Circle
-    {
-        x: 100,
-        y: 100,
-        radius: 80
-    },
-    // Box
-    {
-        x: 250,
-        y: 180,
-        height: 100,
-        width: 100
-    }
+        // Circle
+        {
+            x: 100,
+            y: 100,
+            radius: 80
+        },
+        // Box
+        {
+            x: 250,
+            y: 180,
+            height: 100,
+            width: 100
+        }
 )
 ```
 
@@ -186,4 +186,79 @@ Key.pressed(['up'], () => {
 });
 ```
 
-This method will automatically check if the sprite is allowed to move in a direction by checking if it is colliding with any other solid sprites.
+This method will automatically check if the sprite is allowed to move in a direction by checking if it is colliding with
+any other solid sprites.
+
+*and more abstractions...*
+
+---
+
+## Helper functions
+
+### Storage
+
+Local storage helper functions that keep the type of the value intact.
+
+```javascript
+import {get, set, forget} from './engine/storage.js';
+
+set('key', {test: true});
+const object = get('key'); // {test: true}
+object.test; // true (not "true")
+
+set('key', 5);
+get('key'); // 5 (not "5")
+
+set('key', true);
+get('key'); // true (not "true")
+
+set('key', "string");
+get('key'); // "string"
+
+set('key'); // clear the value of the key
+get('key') // null
+
+forget('key'); // delete key-value pair
+```
+
+---
+
+### Error handling
+
+```javascript
+const [result, error] = TRY(callFunction());
+if (error) {
+    // handle error
+    throw new Error();
+}
+
+// use result
+console.log(result);
+```
+
+Throw error when anything goes wrong within the call stack of a function.
+
+```javascript
+const result = MUST(callFunction());
+```
+
+---
+
+### Misc.
+
+Check if a value is completely and totally empty. Does multiple checks on the value to ensure it is actually empty and
+not `0` or `false`.
+
+```javascript
+let value = 0;
+empty(value); // false
+
+value = false;
+empty(value); // false
+
+value = {};
+empty(value); // true
+
+value = undefined
+empty(value); // true
+```
