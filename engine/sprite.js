@@ -80,15 +80,27 @@ export class Sprite {
         }
     }
 
-    setImage(src) {
+    setImage(src, onload) {
         this.image = new Image();
         this.image.src = src;
         this.image.loading = 'eager';
-        if (!this.width && !this.height) {
-            Log.warn(`Sprite '${this.name}' dimensions were determined by the size of the image set.`);
-            this.width = this.image.naturalWidth;
-            this.height = this.image.naturalHeight;
-        }
+        this.image.onload = () => {
+            if (onload) {
+                onload();
+            }
+
+            if (this.width && this.height) {
+                return;
+            }
+            if (!this.width) {
+                this.width = this.image.naturalWidth;
+            }
+            if (!this.height) {
+                this.height = this.image.naturalHeight;
+            }
+
+            Log.warn(`The dimensions for sprite '${this.name}' were determined by the size of the image as either no width or height were explicitly set.`);
+        };
     }
 
     setBackground(c) {
