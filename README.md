@@ -40,6 +40,19 @@ new Sprite({
 });
 ```
 
+### Drawing Text
+
+```javascript
+const text = new Text({
+    content: 'Use the arrow keys or WASD to move.',
+    font: 'Helvetica',
+    color: 'white',
+    x: 15,
+    y: 15,
+    position: 'right top',
+});
+```
+
 ---
 
 ## Abstractions
@@ -109,7 +122,34 @@ sprite.hoverEnd((e) => {
 
 ---
 
-### Physics
+## UI
+
+HV2D comes with built-in canvas UI.
+
+```javascript
+const textbox = new Textbox({
+    x: 15,
+    y: 15,
+    placeholder: 'Placeholder',
+});
+
+const button = new Button({
+    x: 180,
+    y: 15,
+}).click(() => {
+    button.setBackground('darkred');
+}).clickEnd(() => {
+    button.setBackground('red');
+}).hover(() => {
+    button.setBackground('red');
+    button.setTextColor('white');
+}).hoverEnd(() => {
+    button.setBackground('white');
+    button.setTextColor('black');
+});
+```
+
+## Physics
 
 HV2D comes with built-in physics algorithms for handling sprite collision.
 
