@@ -75,7 +75,7 @@ let logMessage = ['[HV2D]'];
 
 export const Log = {
     log: (message) => {
-        console.log(log(message, '[ERR]'));
+        console.log(log(message, '[DEBUG]'));
     },
     info: (message) => {
         console.info(log(message, '[INFO]'));
@@ -83,8 +83,8 @@ export const Log = {
     warn: (message) => {
         console.warn(log(message, '[WARN]'));
     },
-    err: (message) => {
-        console.error(log(message, '[ERR]'));
+    error: (message) => {
+        console.error(log(message, '[ERROR]'));
     },
 };
 

@@ -13,7 +13,11 @@ let sprites = [];
 
 export class Sprite {
     constructor(options) {
-        this.name = (options.name) ? options.name : `Sprite ${sprites.length + 1}`;
+        if (!options) {
+            return;
+        }
+
+        this.name = options.name ?? `Sprite ${sprites.length + 1}`;
         this.x = (options.x) ? parseInt(options.x) : 0;
         this.y = (options.y) ? parseInt(options.y) : 0;
         this.z = (options.z) ? parseInt(options.z) : null;

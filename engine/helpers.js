@@ -34,8 +34,8 @@ export function color(color) {
     return color;
 }
 
-export async function sleep(ms) {
-    new Promise(r => setTimeout(r, ms * 1000));
+export function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 export const make_id = (prefix = 'id') => prefix + '-' + (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);

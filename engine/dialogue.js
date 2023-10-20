@@ -2,10 +2,10 @@
  * Base dialogue box
  */
 
-import {config, ctx} from "./init.js";
-import {color} from "./helpers.js";
-import {draw} from "./screen.js";
-import {Audio} from "./audio.js";
+import {config, ctx, Log} from './init.js';
+import {color} from './helpers.js';
+import {draw} from './screen.js';
+import {Audio} from './audio.js';
 
 let current_dialogue = false;
 let current_character = 0;
@@ -24,11 +24,11 @@ export let dialogueStyle = {
     border: () => {
         ctx.strokeStyle = 'white';
         ctx.lineWidth = 5;
-    }
+    },
 };
 
 export const Dialogue = {
-    new: function (options) {
+    new: function(options) {
         let this_dialogue = {};
         this_dialogue.text = options.text;
         this_dialogue.position = options.position ?? 'bottom';
@@ -43,37 +43,37 @@ export const Dialogue = {
         current_character = 0;
         current_line = 0;
     },
-    clear: function () {
+    clear: function() {
         current_dialogue = false;
         current_character = 0;
         current_line = 0;
     },
-    load: function (file) {
-        $.get(`dialogue/${file}.json`, function (lines, status, xhr) {
-            if (status === "success") {
+    load: function(file) {
+        $.get(`dialogue/${file}.json`, function(lines, status, xhr) {
+            if (status === 'success') {
 
             } else {
-                console.log("Dialog.load()", "Unable to load dialogue JSON file");
+                Log.error('[Dialog.load()]', 'Unable to load dialogue JSON file');
             }
         });
-    }
-}
+    },
+};
 
 draw(async () => {
     if (current_dialogue !== false) {
         let positions = {
-            "top": {
+            'top': {
                 x: 20,
                 y: 15,
                 width: 600,
-                height: 120
+                height: 120,
             },
-            "bottom": {
+            'bottom': {
                 x: 20,
                 y: 340,
                 width: 600,
-                height: 120
-            }
+                height: 120,
+            },
         };
         let position = positions[current_dialogue.position];
         // box background color
@@ -84,12 +84,12 @@ draw(async () => {
             ctx.drawImage(current_dialogue.backgroundImage, position.x, position.y, position.width, position.height);
         }
         // box border
-        dialogueStyle.border()
+        dialogueStyle.border();
         ctx.strokeRect(position.x, position.y, position.width, position.height);
         // text
         ctx.font = `${current_dialogue.size}px '${current_dialogue.font}'`;
         ctx.fillStyle = color(current_dialogue.color);
-        let lines = current_dialogue.text.split("\n");
+        let lines = current_dialogue.text.split('\n');
 
         ctx.textAlign = 'left';
         ctx.textBaseline = 'top';
@@ -104,7 +104,7 @@ draw(async () => {
         // iterate character
         if (current_character !== lines[current_line].length + 1) {
             ++current_character;
-            if (lines[current_line].charAt(current_character) !== " ") {
+            if (lines[current_line].charAt(current_character) !== ' ') {
                 voices[current_dialogue.voice].play();
             }
             await new Promise(r => setTimeout(r, current_dialogue.speed));
