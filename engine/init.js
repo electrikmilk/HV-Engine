@@ -21,6 +21,12 @@ export function init(options, startCallback) {
     console.time('HV2D_ready');
     if (options) {
         configs = options;
+
+        if (config('backgroundImage')) {
+            const backgroundImage = new Image();
+            backgroundImage.src = config('backgroundImage');
+            configs.backgroundImage = backgroundImage;
+        }
     }
     // Style the body
     new Element('body').style('display', 'flex').style('justify-content', 'center').style('align-items', 'center').style('margin', 0).style('padding', 0).style('height', '100vh').style('background', 'black');
