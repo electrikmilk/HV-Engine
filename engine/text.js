@@ -2,9 +2,9 @@
  * Canvas text abstraction
  */
 
-import {config, ctx} from "./init.js";
-import {color} from "./helpers.js";
-import {draw} from "./screen.js";
+import {config, ctx} from './init.js';
+import {color} from './helpers.js';
+import {draw} from './screen.js';
 
 let texts = [];
 
@@ -19,8 +19,8 @@ export class Text {
         this.width = options.width ?? null;
         this.position = options.position ?? null;
         this.flashInterval = null;
-        this.baseline = options.baseline ?? 'top'
-        this.align = options.align ?? 'left'
+        this.baseline = options.baseline ?? 'top';
+        this.align = options.align ?? 'left';
         this.visible = true;
         if (options.flashing) {
             this.flash();
@@ -44,7 +44,7 @@ export class Text {
         seconds = seconds * 1000;
         let self = this;
         let flashed = 0;
-        this.flashInterval = setInterval(function () {
+        this.flashInterval = setInterval(function() {
             if (this.visible) {
                 self.hide();
             } else {
@@ -97,7 +97,7 @@ setTimeout(() => {
                 if (txt.color) {
                     ctx.fillStyle = txt.color;
                 } else if (!txt.stroke) {
-                    ctx.fillStyle = "black";
+                    ctx.fillStyle = 'black';
                 }
                 if (txt.position) {
                     let position = txt.position.split(' ');
@@ -106,31 +106,31 @@ setTimeout(() => {
                     ctx.textAlign = x;
                     ctx.textBaseline = y;
                     switch (x) {
-                        case "left":
+                        case 'left':
                             txt_x = txt.x;
                             break;
-                        case "center":
+                        case 'center':
                             txt_x = config('width') / 2 + txt_x;
                             break;
-                        case "right":
+                        case 'right':
                             txt_x = config('width') - txt.x;
                             break;
                     }
                     switch (y) {
-                        case "top":
+                        case 'top':
                             txt_y = txt.y;
                             break;
-                        case "middle":
+                        case 'middle':
                             txt_y = config('height') / 2 + txt_y;
                             break;
-                        case "bottom":
+                        case 'bottom':
                             txt_y = config('height') - txt.y;
                             break;
                     }
                 }
                 if (txt.stroke) {
                     if (txt.stroke.width) {
-                        ctx.strokeWidth = txt.stroke.width
+                        ctx.strokeWidth = txt.stroke.width;
                     }
                     if (txt.stroke.color) {
                         ctx.strokeColor = txt.stroke.color;

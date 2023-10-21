@@ -14,28 +14,29 @@ let ui = [];
 
 class UI {
     constructor(type, options) {
-        this.x = options.x ?? 0;
-        this.y = options.y ?? 0;
-        this.width = options.width;
-        this.height = options.height;
-        this.background = options.background ?? 'white';
-        this.border = options.border;
-        this.textColor = options.textColor ?? 'black';
-        this.type = type;
-        this.triggers = false;
-    }
+        const config = options ?? {};
 
+        this.x = config.x ?? 0;
+        this.y = config.y ?? 0;
+        this.width = config.width;
+        this.height = config.height;
+        this.background = config.background ?? 'white';
+        this.border = config.border;
+        this.textColor = config.textColor ?? 'black';
+        this.type = type;
+    }
 }
 
 export class Textbox extends UI {
     constructor(options) {
-        super('textbox', options);
-        this.focused = false;
-        this.width = this.width ?? 150;
-        this.height = this.height ?? 40;
-        this.value = options.defaultValue ?? '';
+        const config = options ?? {};
+        super('textbox', config);
 
-        this.sprite = new Sprite({
+        this.width = config.width ?? 150;
+        this.height = config.height ?? 40;
+        this.value = config.value ?? '';
+
+        this.box = new Sprite({
             background: this.background,
             border: this.border,
             width: this.width,
@@ -54,9 +55,8 @@ export class Textbox extends UI {
             align: 'left',
             baseline: 'middle',
         };
-        this.placeholderText = options.placeholder ?? '';
         let placeholderObj = structuredClone(textObj);
-        placeholderObj.content = this.placeholderText;
+        placeholderObj.content = config.placeholder ?? '';
         placeholderObj.color = 'gray';
         this.placeholder = new Text(placeholderObj);
         this.text = new Text(textObj);
@@ -71,31 +71,30 @@ export class Textbox extends UI {
         });
         this.cursor.visible = false;
 
-        this.sprite.hover(() => {
+        this.box.hover(() => {
             setCursor('text');
         });
-        this.sprite.hoverEnd(() => {
+        this.box.hoverEnd(() => {
             setCursor('default');
         });
-        this.sprite.click(() => {
+        this.box.click(() => {
             this.focused = true;
             this.cursor.flash();
         });
-        this.sprite.clickOutside(() => {
+        this.box.clickOutside(() => {
             this.focused = false;
             this.cursor.stopFlashing();
             this.cursor.visible = false;
         });
-        ui.push(this);
-    }
 
-    getText() {
-        return this.value;
+        this.focused = false;
+
+        ui.push(this);
     }
 
     setText(text) {
         this.value = text;
-        this.text.content = text;
+        this.text.text = text;
         if (!text || text === '') {
             this.cursor.x = this.x + 10;
         }
@@ -106,20 +105,22 @@ export class Textbox extends UI {
     }
 
     setBackground(c) {
-        this.sprite.background = color(c);
+        this.box.background = color(c);
     }
 
     setBorder(c) {
-        this.sprite.border = color(c);
+        this.box.border = color(c);
     }
 }
 
 export class Button extends UI {
     constructor(options) {
         super('button', options);
-        this.buttonText = options.text ?? 'Button';
-        this.width = this.width ?? 100;
-        this.height = this.height ?? 40;
+        const config = options ?? {};
+
+        this.buttonText = config.text ?? 'Button';
+        this.width = config.width ?? 100;
+        this.height = config.height ?? 40;
         this.sprite = new Sprite({
             background: this.background,
             width: this.width,
@@ -137,8 +138,8 @@ export class Button extends UI {
             color: this.textColor,
             content: this.buttonText ?? 'Button',
         });
-        if (options.onClick) {
-            this.sprite.click(options.onClick);
+        if (config.onClick) {
+            this.sprite.click(config.onClick);
         }
         ui.push(this);
     }
@@ -189,7 +190,7 @@ draw(() => {
         switch (element.type) {
             case 'textbox':
                 textbox(element);
-                if (element.placeholderText) {
+                if (element.placeholder) {
                     element.placeholder.visible = element.value.length === 0;
                 }
                 break;
@@ -221,7 +222,7 @@ function textbox(textbox) {
             }
             if (textbox.value) {
                 textbox.value += e.key;
-                if ((textbox.text.measure().width + 10) < textbox.sprite.width + 10) {
+                if ((textbox.text.measure().width + 10) < textbox.box.width + 10) {
                     textbox.text.content = textbox.value;
                 }
             } else {
@@ -244,7 +245,7 @@ function textbox(textbox) {
                         }
                         if (textbox.value) {
                             textbox.value = text.substring(0, (text.length - 1));
-                            if ((textbox.text.measure().width + 10) < textbox.sprite.width) {
+                            if ((textbox.text.measure().width + 10) < textbox.box.width) {
                                 textbox.text.content = textbox.value;
                             }
                         }
