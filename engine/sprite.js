@@ -148,18 +148,21 @@ export class Sprite {
         this.flashInterval = setInterval(function() {
             self.visible = !self.visible;
             flashed++;
-            if (times !== 0) {
-                if (flashed > times) {
-                    self.stopFlashing();
-                }
+            if (times === 0) {
+                return;
+            }
+            if (flashed > times) {
+                self.stopFlashing();
             }
         }, seconds);
     }
 
     stopFlashing() {
-        if (this.flashInterval) {
-            clearInterval(this.flashInterval);
+        if (!this.flashInterval) {
+            return;
         }
+
+        clearInterval(this.flashInterval);
     }
 
     move(direction, amount) {
