@@ -153,7 +153,21 @@ const button = new Button({
 
 HV2D comes with built-in physics algorithms for handling sprite collision.
 
-Check if two sprites are colliding or do some custom collision. Both sprites must have `solid` set to `true`.
+You can do this automatically by moving sprites using the `Sprite.move()` method. This method will automatically check if the sprite is allowed to move in a direction by checking if it is colliding with any other solid sprites. Both sprites must have `solid` set to `true`.
+
+```javascript
+import {Sprite} from "./engine/sprite.js";
+
+let sprite = new Sprite({
+    solid: true
+})
+
+Key.pressed(['up'], () => {
+    sprite.move('up', 10);
+});
+```
+
+Check if two sprites are colliding manually or do some custom collision:
 
 ```javascript
 import {colliding, circleCollision, boxCollision, circleBoxCollision} from "./engine/physics.js";
@@ -211,23 +225,6 @@ circleBoxCollision(
         }
 )
 ```
-
-You can do this automatically by moving sprites using the `Sprite.move()` method.
-
-```javascript
-import {Sprite} from "./engine/sprite.js";
-
-let sprite = new Sprite({
-    solid: true
-})
-
-Key.pressed(['up'], () => {
-    sprite.move('up', 10);
-});
-```
-
-This method will automatically check if the sprite is allowed to move in a direction by checking if it is colliding with
-any other solid sprites.
 
 *and more abstractions...*
 
