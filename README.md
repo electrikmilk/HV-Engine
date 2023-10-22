@@ -8,6 +8,18 @@ handling dialogue boxes.
 
 It is currently a work in progress and tested locally rather than using a JavaScript module.
 
+## 📦 Out of the box features
+
+- 🎨 Direct access to canvas rendering loop. Grab the canvas context, clear the screen, pause the main draw loop, add to the draw loop, etc.
+- ⏹️ Sprite abstraction (shadows, move, rotate, flash, gradient, background, etc.)
+- 🐭 Canvas mouse abstraction
+- 🔤 Easy keyboard abstraction
+- 🎮 Gamepad support
+- 🔊 Audio abstraction
+- 💬 Dialogue boxes
+- ⚽️ Physics
+- 🐇 Animation
+
 ---
 
 ## Hello, world
