@@ -26,6 +26,7 @@ export class Sprite {
         this.solid = (options.solid) ? options.solid : false;
         this.shape = (options.shape) ? options.shape : 'rectangle';
         this.radius = (options.radius) ? options.radius : 0;
+        this.angle = options.angle ?? 0;
         this.background = color(options.background);
         this.border = null;
         if (options.border) {
@@ -165,6 +166,10 @@ export class Sprite {
         clearInterval(this.flashInterval);
     }
 
+    rotate(angle) {
+        this.angle = angle;
+    }
+
     move(direction, amount) {
         let new_x = this.x;
         let new_y = this.y;
@@ -232,10 +237,14 @@ setTimeout(() => {
         if (sprites.length !== 0) {
             sprites.sort();
             sprites.forEach(function(sprite) {
+                ctx.save();
                 if (!sprite.visible) {
                     return;
                 }
                 ctx.beginPath();
+                if (sprite.angle) {
+                    ctx.rotate(sprite.angle * Math.PI / 180);
+                }
                 if (sprite.image) {
                     ctx.drawImage(sprite.image, sprite.x, sprite.y, sprite.width, sprite.height);
                 } else if (sprite.shape === 'rectangle') {
@@ -277,6 +286,7 @@ setTimeout(() => {
                     ctx.shadowOffsetX = sprite.shadow.offsetX ?? 0;
                     ctx.shadowOffsetY = sprite.shadow.offsetY ?? 0;
                 }
+                ctx.restore();
             });
         }
         ctx.restore();
