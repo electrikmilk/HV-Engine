@@ -155,3 +155,9 @@ export const MUST = func => {
 export const empty = value => {
     return value === undefined || typeof value === 'undefined' || value === null || (!value && value !== 0 && value !== false) || value.length === 0 || Object.is(value, {});
 };
+
+export function randInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
