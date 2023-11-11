@@ -6,8 +6,7 @@
  */
 
 import {colliding} from './physics.js';
-import {canvas, ctx} from './init.js';
-import {draw} from './screen.js';
+import {canvas} from './init.js';
 import {color} from './helpers.js';
 import {Sprite} from './sprite.js';
 
@@ -80,15 +79,7 @@ let spriteMouseCallbacks = {
     'clickout': [],
 };
 
-const MouseSprite = {
-    shape: 'rectangle',
-    image: null,
-    color: null,
-    width: 32,
-    height: 32,
-    x: 0,
-    y: 0,
-};
+export let MouseSprite;
 
 function spriteMouseCallback(state, obj, callback) {
     spriteMouseCallbacks[state].push({
@@ -118,20 +109,7 @@ Sprite.prototype.clickOutside = function(callback) {
 };
 
 export function drawMouse() {
-    canvas.on('mousemove', function(e) {
-        const callbacks =
-                mouseCallbacks['mousemove'].length +
-                mouseCallbacks['mouseup'].length +
-                mouseCallbacks['mousedown'].length +
-
-                spriteMouseCallbacks['mouseup'].length +
-                spriteMouseCallbacks['mousedown'].length +
-                spriteMouseCallbacks['mousemove'].length +
-                spriteMouseCallbacks['mouseout'].length;
-        if (callbacks === 0) {
-            return;
-        }
-
+    canvas.on('mousemove', (e) => {
         const x = e.pageX - canvas.element.offsetLeft;
         const y = e.pageY - canvas.element.offsetTop;
         MouseSprite.x = x;
@@ -165,14 +143,15 @@ export function drawMouse() {
     canvas.on('mouseup', (e) => {
         clickCallback(e, 'mouseup', true);
     });
-    draw(() => {
-        if (MouseSprite.color) {
-            ctx.fillStyle = color(MouseSprite.color);
-            ctx.fillRect(MouseSprite.x, MouseSprite.y, MouseSprite.width, MouseSprite.height);
-        }
-        if (MouseSprite.image) {
-            ctx.drawImage(MouseSprite.image, MouseSprite.x, MouseSprite.y, MouseSprite.width, MouseSprite.height);
-        }
+    MouseSprite = new Sprite({
+        name: 'Mouse',
+        shape: 'rectangle',
+        image: null,
+        color: null,
+        width: 32,
+        height: 32,
+        x: 0,
+        y: 0,
     });
 }
 
