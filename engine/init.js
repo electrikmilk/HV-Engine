@@ -13,6 +13,7 @@ let defaultOptions = {
     backgroundImage: null,
     font: 'Helvetica',
     fullscreen: false,
+    debug: false,
 };
 
 let configs = {};

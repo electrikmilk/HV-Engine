@@ -246,12 +246,63 @@ export class Sprite {
     }
 }
 
+function debugSprite(sprite) {
+    let x = sprite.x + sprite.width + 10;
+    let y = sprite.y;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(x, sprite.y, 145, 135);
+    ctx.fillStyle = '#121212';
+    ctx.fill();
+    ctx.restore();
+    x += 10;
+    y += 10;
+
+    ctx.save();
+    ctx.fillStyle = '#fafafa';
+    ctx.font = '14px \'Courier\'';
+    ctx.textAlign = 'top';
+    ctx.textBaseline = 'top';
+    ctx.fillText(`name: ${sprite.name}`, x, y);
+    ctx.fillText(`visible: ${sprite.visible}`, x, y + 20);
+    ctx.fillText(`x: ${sprite.x}`, x, y + 40);
+    ctx.fillText(`y: ${sprite.y}`, x, y + 60);
+    ctx.fillText(`width: ${sprite.width}`, x, y + 80);
+    ctx.fillText(`height: ${sprite.width}`, x, y + 100);
+    ctx.restore();
+
+    ctx.save();
+    ctx.beginPath();
+    if (sprite.angle) {
+        ctx.rotate(sprite.angle * Math.PI / 180);
+    }
+    switch (sprite.shape) {
+        case 'circle':
+            ctx.arc(sprite.x, sprite.y, sprite.radius, 0, 2 * Math.PI, false);
+            break;
+        default:
+            ctx.rect(sprite.x, sprite.y, sprite.width, sprite.height);
+    }
+    if (!sprite.hasOwnProperty('debugColor')) {
+        sprite.debugColor = color(debugColors[randInt(0, 2)]);
+    }
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = sprite.debugColor;
+    ctx.stroke();
+    ctx.restore();
+}
+
 setTimeout(() => {
     draw(() => {
         ctx.save();
         if (sprites.length !== 0) {
-            sprites.sort();
+            sprites.sort().reverse();
             sprites.forEach(function(sprite) {
+                if (config('debug')) {
+                    debugSprite(sprite);
+                }
+
                 ctx.save();
                 if (!sprite.visible) {
                     return;
