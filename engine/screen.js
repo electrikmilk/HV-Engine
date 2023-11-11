@@ -2,8 +2,8 @@
  * Main canvas drawing loop and helper functions
  */
 
-import {config, ctx, frame} from "./init.js";
-import {color} from "./helpers.js";
+import {config, ctx, frame} from './init.js';
+import {color} from './helpers.js';
 
 let drawCallbacks = [];
 
