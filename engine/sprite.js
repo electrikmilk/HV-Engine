@@ -6,18 +6,33 @@
 
 import {config, ctx, Log} from './init.js';
 import {colliding} from './physics.js';
-import {color} from './helpers.js';
+import {color, randInt} from './helpers.js';
 import {draw} from './screen.js';
 
 let sprites = [];
+let spritesCount = 0;
+
+const debugColors = ['#FF00FF', '#00FFFF', '#00FF0E'];
 
 export class Sprite {
+    name;
+    visible = true;
+    x = 0;
+    y = 0;
+    width = 1;
+    height = 1;
+    solid = false;
+    shape = 'rectangle';
+    radius = 0;
+    angle = 0;
+    background;
+
     constructor(options) {
         if (!options) {
             return;
         }
 
-        this.name = options.name ?? `Sprite ${sprites.length + 1}`;
+        this.name = options.name ?? `Sprite ${spritesCount + 1}`;
         this.x = (options.x) ? parseInt(options.x) : 0;
         this.y = (options.y) ? parseInt(options.y) : 0;
         this.z = (options.z) ? parseInt(options.z) : null;
@@ -31,7 +46,7 @@ export class Sprite {
         this.border = null;
         if (options.border) {
             this.border = {
-                color: color('\'black\''),
+                color: color('black'),
                 width: 1,
             };
             this.border.color = color(options.border.color);
