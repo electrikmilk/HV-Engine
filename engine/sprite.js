@@ -88,7 +88,7 @@ export class Sprite {
         }
         this.boundToViewport = (options.boundToViewport) ? options.boundToViewport : false;
         this.flashInterval = null;
-        this.visible = true;
+        this.visible = options.visible ?? true;
         if (this.z === null) {
             sprites.push(this);
         } else {
@@ -171,6 +171,18 @@ export class Sprite {
                 self.stopFlashing();
             }
         }, seconds);
+    }
+
+    toggle() {
+        this.visible = !this.visible;
+    }
+
+    show() {
+        this.visible = true;
+    }
+
+    hide() {
+        this.visible = false;
     }
 
     stopFlashing() {
